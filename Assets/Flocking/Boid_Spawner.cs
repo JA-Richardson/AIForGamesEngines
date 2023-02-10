@@ -2,20 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FlockSpawner : MonoBehaviour
+public class Boid_Spawner : MonoBehaviour
 {
+    public GameObject boid;
 
-    public GameObject Boid;
+    
     // Start is called before the first frame update
     void Start()
     {
-        for (int i = 0; i < 10; i++)
+        for(int i = 0; i < 100; i++)
         {
-
-            Transform transform = Boid.transform;
-
-            Instantiate(Boid, transform);
+            Instantiate(boid);
+            
         }
+        
         
     }
 
