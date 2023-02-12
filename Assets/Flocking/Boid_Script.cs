@@ -7,55 +7,89 @@ public class Boid_Script : MonoBehaviour
 
     public Quaternion direction;
     public Vector3 position;
-    public float speed = 1;
-    public float Turning = 5;
-    public float spawnRange = 25;
+    float speed = 10;
+    float Turningrate = 3;
+    float turnRandomisation = 1;
+    float spawnRange = 25;
+    float timer = 0;
+    
 
     public List<GameObject> neighbours = new List<GameObject>();
-    private Quaternion qTo;
-    private float timer = 0;
+    
+    
 
     // Start is called before the first frame update
     void Start()
     {
         direction = Random.rotation;
         this.transform.position = new Vector3(Random.Range(-spawnRange, spawnRange), Random.Range(-spawnRange, spawnRange), Random.Range(-spawnRange, spawnRange));
-
+        this.transform.rotation = direction;    
     }
     
     // Update is called once per frame
     void Update()
     {
-
         timer += Time.deltaTime;
 
-           
-            //if (timer > 2)
-            //{ // timer resets at 2, allowing .5 s to do the rotating
-            //    qTo = Quaternion.Euler(new Vector3(0.0f, Random.Range(-180.0f, 180.0f), 0.0f));
-            //    timer = 0.0f;
-            //}
-            
-           
+
+        if (neighbours.Count>0)
+        {
+            if (timer > 0.5)
+            {
+                direction = allignment();
+                timer = 0;
+            }
+
+        }
+        
+       
 
 
+        
+        
 
-        //this.transform.position += transform.up*speed*Time.deltaTime;
+        direction = direction * Quaternion.Euler(new Vector3(Random.Range(-turnRandomisation, turnRandomisation), Random.Range(-turnRandomisation, turnRandomisation), Random.Range(-turnRandomisation, turnRandomisation)));
 
-        direction = direction * Quaternion.Euler(new Vector3(Random.Range(-Turning, Turning), Random.Range(-Turning, Turning), Random.Range(-Turning, Turning)));
-
-        transform.rotation = Quaternion.Slerp(transform.rotation, direction, Time.deltaTime * Turning);
+        transform.rotation = Quaternion.Slerp(transform.rotation, direction, Time.deltaTime * Turningrate);
 
         transform.Translate(Vector3.up * speed * Time.deltaTime);
         //this.transform.rotation = direction;
     }
-    void allignment()
+    Quaternion allignment()
     {
 
+        Quaternion average = new Quaternion(0, 0, 0, 0);
+        int amount = 0;
+
+        foreach (var neighbour in neighbours)
+        {
+            amount++;
+
+            Quaternion rotation = neighbour.transform.rotation;
+
+            average = Quaternion.Slerp(average, rotation, 1 / amount);
+        }
+        return average;
     }
-    void cohesion()
+    Vector3 cohesion()
     {
+        Vector3 average = new Vector3(0, 0, 0);
 
+        foreach (var neighbour in neighbours)
+        {
+
+            average += neighbour.transform.position;
+            
+
+            
+        }
+        average /= neighbours.Count;
+
+        Vector3 vectorToAverage = average - this.transform.position;
+
+        
+
+        return vectorToAverage;
 
     }
     void separation()
