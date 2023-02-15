@@ -47,13 +47,15 @@ public class Boid_Script : MonoBehaviour
 
         
         
-
+        //adds some random variation to the agents direction 
         direction = direction * Quaternion.Euler(new Vector3(Random.Range(-turnRandomisation, turnRandomisation), Random.Range(-turnRandomisation, turnRandomisation), Random.Range(-turnRandomisation, turnRandomisation)));
 
+        // slowly turns the agent to point towards the desired direction
         transform.rotation = Quaternion.Slerp(transform.rotation, direction, Time.deltaTime * Turningrate);
 
+        //moves the agent forward 
         transform.Translate(Vector3.up * speed * Time.deltaTime);
-        //this.transform.rotation = direction;
+        
     }
     Quaternion allignment()
     {
