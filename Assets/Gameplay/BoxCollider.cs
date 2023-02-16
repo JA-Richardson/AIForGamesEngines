@@ -5,7 +5,7 @@ using System.Collections;
 
 public class BoxCollider : MonoBehaviour
 {
-
+    public GameObject WallClass;
     public bool wall = false;
     public bool turret = false;
 
@@ -13,11 +13,13 @@ public class BoxCollider : MonoBehaviour
     {
         if (wall)
         {
-            GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.transform.position = this.transform.position;
-            cube.transform.localScale = new Vector3(8, 8, 8);
-            var cubeRenderer = cube.GetComponent<Renderer>();
-            cubeRenderer.material.SetColor("_Color", Color.red);
+            
+            Instantiate(WallClass, transform.position, transform.rotation);
+            //GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            //cube.transform.position = this.transform.position;
+            //cube.transform.localScale = new Vector3(8, 8, 8);
+            //var cubeRenderer = cube.GetComponent<Renderer>();
+            //cubeRenderer.material.SetColor("_Color", Color.red);
             Destroy(gameObject);
         }
         else if (turret)
