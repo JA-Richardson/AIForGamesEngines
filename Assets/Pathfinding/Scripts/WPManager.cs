@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-//
 //struct for easier data entry
 [System.Serializable]
 public struct Link //edges for the graph/nodes
