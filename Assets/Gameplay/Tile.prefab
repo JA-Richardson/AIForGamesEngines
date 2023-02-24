@@ -111,5 +111,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WallClass: {fileID: 5000804175234902841, guid: 40674633e8ab37f4e85cb264866736b2, type: 3}
+  TurretClass: {fileID: 4681624046367494400, guid: 62d8b487c1d68df4abe84e946cbfd99a, type: 3}
+  PublicVariablesHolder: {fileID: 1609042384332428607, guid: 68aabf0a3b4b5b0428e0bc3f9dcf89e0, type: 3}
   wall: 0
   turret: 0

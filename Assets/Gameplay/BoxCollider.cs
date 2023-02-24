@@ -4,8 +4,14 @@ using System.Collections;
 public class BoxCollider : MonoBehaviour
 {
     public GameObject WallClass;
+    public GameObject TurretClass;
+
+    public GameObject PublicVariablesHolder;
+    private PublicVariables wallCountscript;
+
     public bool wall = false;
     public bool turret = false;
+
 
     void OnMouseDown()
     {
@@ -13,21 +19,22 @@ public class BoxCollider : MonoBehaviour
         {
             Instantiate(WallClass, transform.position, transform.rotation);
             Destroy(gameObject);
-
+            wallCountscript.wallCount += 1;
         }
         else if (turret)
         {
-            GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.transform.position = this.transform.position;
-            cube.transform.localScale = new Vector3(5, 5, 5);
-            var cubeRenderer = cube.GetComponent<Renderer>();
-            cubeRenderer.material.SetColor("_Color", Color.blue);
+            Instantiate(TurretClass, transform.position, transform.rotation);
             Destroy(gameObject);
         }
         else
         {
             return;
         }
+    }
+
+    void Start()
+    {
+        wallCountscript = PublicVariablesHolder.GetComponent<PublicVariables>();
     }
 
     void Update()
@@ -43,6 +50,8 @@ public class BoxCollider : MonoBehaviour
             turret = true;
             wall = false;
         }
+
+        Debug.Log(wallCountscript.wallCount);
     }
 
 }
