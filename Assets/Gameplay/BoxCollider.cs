@@ -11,6 +11,7 @@ public class BoxCollider : MonoBehaviour
 
     public bool wall = false;
     public bool turret = false;
+    public char area;
 
 
     void OnMouseDown()
@@ -19,12 +20,16 @@ public class BoxCollider : MonoBehaviour
         {
             Instantiate(WallClass, transform.position, transform.rotation);
             Destroy(gameObject);
+
             wallCountscript.wallCount += 1;
+
         }
         else if (turret)
         {
             Instantiate(TurretClass, transform.position, transform.rotation);
             Destroy(gameObject);
+
+            wallCountscript.turretCount += 1;
         }
         else
         {
@@ -35,6 +40,21 @@ public class BoxCollider : MonoBehaviour
     void Start()
     {
         wallCountscript = PublicVariablesHolder.GetComponent<PublicVariables>();
+        
+        if(transform.position.x < 0)
+        {
+            area = 'a';
+        }
+        else if(transform.position.x > 0)
+        {
+            area = 'b';
+        }
+    }
+
+    void ChangeToTurret()
+    {
+        turret = true;
+        wall = false;
     }
 
     void Update()
@@ -50,8 +70,5 @@ public class BoxCollider : MonoBehaviour
             turret = true;
             wall = false;
         }
-
-        Debug.Log(wallCountscript.wallCount);
     }
-
 }

@@ -4,17 +4,18 @@ using UnityEngine;
 
 public class PublicVariables : MonoBehaviour
 {
-    public int wallCount;
+    public int wallCount = 0;
+    public int turretCount = 0;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        wallCount = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log(wallCount);
+
     }
 }
