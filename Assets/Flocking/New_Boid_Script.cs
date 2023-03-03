@@ -9,9 +9,9 @@ public class New_Boid_Script : MonoBehaviour
     public float speed = 10;
     float turningRate = 3;
     float spawnRange = 25;
-    float a = 0.9f;
-    float c = 1.0f;
-    float s = 1.0f;
+    float a = 1.5f;
+    float c = 1.5f;
+    float s = 1.5f;
 
     public List<GameObject> neighbours = new List<GameObject>();
 
@@ -67,7 +67,7 @@ public class New_Boid_Script : MonoBehaviour
             Average += neigbour.transform.up;
         }
 
-        Average.Normalize();
+        //Average.Normalize();
         return Average;
     }
     Vector3 cohesion()
@@ -82,7 +82,7 @@ public class New_Boid_Script : MonoBehaviour
 
 
         }
-        average /= neighbours.Count;
+        //average /= neighbours.Count;
 
         Vector3 vectorToAverage = average - this.transform.position;
 
@@ -97,13 +97,16 @@ public class New_Boid_Script : MonoBehaviour
 
         foreach (var neighbour in neighbours)
         {
-
-            average += (this.transform.position - neighbour.transform.position);
+            if((this.transform.position - neighbour.transform.position).magnitude < 10)
+            {
+                 average += (this.transform.position - neighbour.transform.position);
+            }
+           
 
 
 
         }
-        average /= neighbours.Count;
+        //average /= neighbours.Count;
 
         return average;
 
