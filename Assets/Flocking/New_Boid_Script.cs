@@ -9,11 +9,12 @@ public class New_Boid_Script : MonoBehaviour
     public float speed = 10;
     float turningRate = 3;
     float spawnRange = 25;
-    float a = 1.5f;
-    float c = 1.5f;
-    float s = 1.5f;
+    float a = 0.1f;
+    float c = 0.5f;
+    float s = 0.1f;
 
     public List<GameObject> neighbours = new List<GameObject>();
+    public List<GameObject> avoidList = new List<GameObject>();
 
     // Start is called before the first frame update
     void Start()
@@ -40,7 +41,11 @@ public class New_Boid_Script : MonoBehaviour
             flockVelocity += allignment()*a;
             flockVelocity += cohesion()*c;
             flockVelocity += Separation()*s;
+            
             flockVelocity.Normalize();
+            flockVelocity += Avoid();
+            flockVelocity.Normalize();
+
 
 
             Velocity = Vector3.Lerp(Velocity, flockVelocity, turningRate * Time.deltaTime);
@@ -111,6 +116,16 @@ public class New_Boid_Script : MonoBehaviour
         return average;
 
     }
+    Vector3 Avoid()
+    {
+        Vector3 average = new Vector3(0, 0, 0);
+
+        foreach (var thing in avoidList)
+        {
+            average += thing.transform.up;
+        }
+        return average;
+    }
 
 
     private void OnTriggerEnter(Collider other)
@@ -120,6 +135,10 @@ public class New_Boid_Script : MonoBehaviour
             neighbours.Add(other.gameObject);
             Debug.Log("trigger!");
         }
+        else if (other.tag == "Test Wall")
+        {
+            avoidList.Add(other.gameObject);
+        }
 
 
     }
@@ -127,6 +146,14 @@ public class New_Boid_Script : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        neighbours.Remove(other.gameObject);
+       
+        if (other.tag == "Boid")
+        {
+            neighbours.Remove(other.gameObject);
+        }
+        else if (other.tag == "Test Wall")
+        {
+            avoidList.Remove(other.gameObject);
+        }
     }
 }
