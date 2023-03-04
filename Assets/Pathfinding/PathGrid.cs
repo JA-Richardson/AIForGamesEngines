@@ -12,6 +12,7 @@ public class PathGrid : MonoBehaviour
 
     float pNodeDiam;
     int pGridSizeX, pGridSizeY;
+    public List<PathNode> pPath;
 
     // Start is called before the first frame update
     void Start()
@@ -32,11 +33,29 @@ public class PathGrid : MonoBehaviour
             {
                 Vector3 worldPoint = worldBottomLeft + Vector3.right * (x * pNodeDiam + pNodeRadius) + Vector3.forward * (y * pNodeDiam + pNodeRadius);
                 bool walkable = !(Physics.CheckSphere(worldPoint, pNodeRadius, pUnwalkableMask));
-                pGrid[x, y] = new PathNode(walkable, worldPoint);
+                pGrid[x, y] = new PathNode(walkable, worldPoint, x, y);
             }
         }
     }
-
+    public List<PathNode> GetNeighbourNodes(PathNode node)
+    {
+        List<PathNode> neighbour = new List<PathNode>();
+        for (int x = -1; x <= 1; x++)
+        {
+            for (int y = -1; y <= 1; y++)
+            {
+                if (x == 0 && y == 0)
+                    continue;
+                int checkX = node.pGridX + x;
+                int checkY = node.pGridY + y;
+                if (checkX >= 0 && checkX < pGridSizeX && checkY >= 0 && checkY < pGridSizeY)
+                {
+                    neighbour.Add(pGrid[checkX, checkY]);
+                }
+            }
+        }
+        return neighbour;
+    }
     public PathNode NodeFromWorldpoint(Vector3 worldPos)
     {
         float percentX = (worldPos.x + pGridWorldSize.x / 2) / pGridWorldSize.x;
@@ -56,16 +75,24 @@ public class PathGrid : MonoBehaviour
         if (pGrid != null)
         {
             PathNode playerNode = NodeFromWorldpoint(pPlayer.position);
-            
+
             foreach (PathNode p in pGrid)
             {
                 Gizmos.color = (p.pWalkable) ? Color.white : Color.red;
-                if(playerNode.pWorldPos == p.pWorldPos) 
+                if (pPath != null)
                 {
-                    print("x1 : " + playerNode.pWorldPos.x + " y1 : " + playerNode.pWorldPos.y);
-                    print("x2 : " + p.pWorldPos.x + " y2 : " + p.pWorldPos.y);
-                    Gizmos.color = Color.blue; 
+                    //Debug.Log("pPath is not null");
+                    if (pPath.Contains(p))
+                    {
+                        Debug.Log("pPath contains p");
+                        Gizmos.color = Color.black;
+                    }
                 }
+                //if (playerNode.pWorldPos == p.pWorldPos)
+                //{
+                    
+                //    Gizmos.color = Color.blue;
+                //}
                 Gizmos.DrawCube(p.pWorldPos, Vector3.one * (pNodeDiam - 0.1f));
 
             }
@@ -73,11 +100,11 @@ public class PathGrid : MonoBehaviour
     }
 
     
-    
-
+  
     // Update is called once per frame
     void Update()
     {
 
     }
+
 }
