@@ -1,36 +1,31 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using System.Collections;
 
-public class PathNode : MonoBehaviour
+public class PathNode
 {
 
-    public bool pWalkable;
-    public Vector3 pWorldPos;
+    public bool walkable;
+    public Vector3 worldPosition;
+    public int gridX;
+    public int gridY;
 
     public int gCost;
     public int hCost;
-    public int fCost { get { return gCost + hCost; } }
-    public int pGridX;
-    public int pGridY;
-    public PathNode pParentNode;
+    public PathNode parent;
 
-    public PathNode(bool walkable, Vector3 worldPos, int gridX, int gridY)
+    public PathNode(bool _walkable, Vector3 _worldPos, int _gridX, int _gridY)
     {
-        pWalkable = walkable;
-        pWorldPos = worldPos;
-        pGridX = gridX;
-        pGridY = gridY;
-    }
-    // Start is called before the first frame update
-    void Start()
-    {
-
+        walkable = _walkable;
+        worldPosition = _worldPos;
+        gridX = _gridX;
+        gridY = _gridY;
     }
 
-    // Update is called once per frame
-    void Update()
+    public int FCost
     {
-
+        get
+        {
+            return gCost + hCost;
+        }
     }
 }

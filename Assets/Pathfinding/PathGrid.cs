@@ -1,110 +1,94 @@
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class PathGrid : MonoBehaviour
 {
-    public Transform pPlayer;
-    public LayerMask pUnwalkableMask;
-    public Vector2 pGridWorldSize;
-    public float pNodeRadius;
-    PathNode[,] pGrid;
 
-    float pNodeDiam;
-    int pGridSizeX, pGridSizeY;
-    public List<PathNode> pPath;
+    public LayerMask unwalkableMask;
+    public Vector2 gridWorldSize;
+    public float nodeRadius;
+    PathNode[,] grid;
 
-    // Start is called before the first frame update
-    void Start()
+    float nodeDiameter;
+    int gridSizeX, gridSizeY;
+
+    void Awake()
     {
-        pNodeDiam = pNodeRadius * 2;
-        pGridSizeX = Mathf.RoundToInt(pGridWorldSize.x / pNodeDiam);
-        pGridSizeY = Mathf.RoundToInt(pGridWorldSize.y / pNodeDiam);
+        nodeDiameter = nodeRadius * 2;
+        gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
+        gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
         CreateGrid();
     }
 
     void CreateGrid()
     {
-        pGrid = new PathNode[pGridSizeX, pGridSizeY];
-        Vector3 worldBottomLeft = transform.position - Vector3.right * pGridWorldSize.x / 2 - Vector3.forward * pGridWorldSize.y / 2;
-        for (int x = 0; x < pGridSizeX; x++)
+        grid = new PathNode[gridSizeX, gridSizeY];
+        Vector3 worldBottomLeft = transform.position - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
+
+        for (int x = 0; x < gridSizeX; x++)
         {
-            for (int y = 0; y < pGridSizeY; y++)
+            for (int y = 0; y < gridSizeY; y++)
             {
-                Vector3 worldPoint = worldBottomLeft + Vector3.right * (x * pNodeDiam + pNodeRadius) + Vector3.forward * (y * pNodeDiam + pNodeRadius);
-                bool walkable = !(Physics.CheckSphere(worldPoint, pNodeRadius, pUnwalkableMask));
-                pGrid[x, y] = new PathNode(walkable, worldPoint, x, y);
+                Vector3 worldPoint = worldBottomLeft + Vector3.right * (x * nodeDiameter + nodeRadius) + Vector3.forward * (y * nodeDiameter + nodeRadius);
+                bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius, unwalkableMask));
+                grid[x, y] = new PathNode(walkable, worldPoint, x, y);
             }
         }
     }
-    public List<PathNode> GetNeighbourNodes(PathNode node)
+
+    public List<PathNode> GetNeighbours(PathNode node)
     {
-        List<PathNode> neighbour = new List<PathNode>();
+        List<PathNode> neighbours = new();
+
         for (int x = -1; x <= 1; x++)
         {
             for (int y = -1; y <= 1; y++)
             {
                 if (x == 0 && y == 0)
                     continue;
-                int checkX = node.pGridX + x;
-                int checkY = node.pGridY + y;
-                if (checkX >= 0 && checkX < pGridSizeX && checkY >= 0 && checkY < pGridSizeY)
+
+                int checkX = node.gridX + x;
+                int checkY = node.gridY + y;
+
+                if (checkX >= 0 && checkX < gridSizeX && checkY >= 0 && checkY < gridSizeY)
                 {
-                    neighbour.Add(pGrid[checkX, checkY]);
+                    neighbours.Add(grid[checkX, checkY]);
                 }
             }
         }
-        return neighbour;
+
+        return neighbours;
     }
-    public PathNode NodeFromWorldpoint(Vector3 worldPos)
+
+
+    public PathNode NodeFromWorldPoint(Vector3 worldPosition)
     {
-        float percentX = (worldPos.x + pGridWorldSize.x / 2) / pGridWorldSize.x;
-        float percentY = (worldPos.z + pGridWorldSize.y / 2) / pGridWorldSize.y;
+        float percentX = (worldPosition.x + gridWorldSize.x / 2) / gridWorldSize.x;
+        float percentY = (worldPosition.z + gridWorldSize.y / 2) / gridWorldSize.y;
         percentX = Mathf.Clamp01(percentX);
         percentY = Mathf.Clamp01(percentY);
-        int x = Mathf.RoundToInt((pGridSizeX - 1) * percentX);
-        int y = Mathf.RoundToInt((pGridSizeY - 1) * percentY);
 
-        return pGrid[x, y];
-
+        int x = Mathf.RoundToInt((gridSizeX - 1) * percentX);
+        int y = Mathf.RoundToInt((gridSizeY - 1) * percentY);
+        return grid[x, y];
     }
 
-    private void OnDrawGizmos()
+    public List<PathNode> path;
+    void OnDrawGizmos()
     {
-        Gizmos.DrawWireCube(transform.position, new Vector3(pGridWorldSize.x, 1, pGridWorldSize.y));
-        if (pGrid != null)
+        Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
+
+        if (grid != null)
         {
-            PathNode playerNode = NodeFromWorldpoint(pPlayer.position);
-
-            foreach (PathNode p in pGrid)
+            foreach (PathNode n in grid)
             {
-                Gizmos.color = (p.pWalkable) ? Color.white : Color.red;
-                if (pPath != null)
-                {
-                    //Debug.Log("pPath is not null");
-                    if (pPath.Contains(p))
-                    {
-                        Debug.Log("pPath contains p");
+                Gizmos.color = (n.walkable) ? Color.white : Color.red;
+                if (path != null)
+                    if (path.Contains(n))
                         Gizmos.color = Color.black;
-                    }
-                }
-                //if (playerNode.pWorldPos == p.pWorldPos)
-                //{
-                    
-                //    Gizmos.color = Color.blue;
-                //}
-                Gizmos.DrawCube(p.pWorldPos, Vector3.one * (pNodeDiam - 0.1f));
-
+                Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter - .1f));
             }
         }
     }
-
-    
-  
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
 }

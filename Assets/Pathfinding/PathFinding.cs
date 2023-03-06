@@ -1,105 +1,97 @@
-using BehaviorTree;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class PathFinding : MonoBehaviour
 {
-    PathGrid grid;
 
     public Transform seeker, target;
+    PathGrid grid;
 
-    private void Awake()
+    void Awake()
     {
         grid = GetComponent<PathGrid>();
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
     void Update()
     {
-        findPath(seeker.position, target.position);
+        FindPath(seeker.position, target.position);
     }
 
-    void findPath(Vector3 start, Vector3 end)
+    void FindPath(Vector3 startPos, Vector3 targetPos)
     {
-        PathNode startNode = grid.NodeFromWorldpoint(start);
-        PathNode endNode = grid.NodeFromWorldpoint(end);
+        PathNode startNode = grid.NodeFromWorldPoint(startPos);
+        PathNode targetNode = grid.NodeFromWorldPoint(targetPos);
 
-        List<PathNode> openNode = new List<PathNode>();
-        HashSet<PathNode> closedNode = new HashSet<PathNode>();
-        openNode.Add(startNode);
+        List<PathNode> openSet = new();
+        HashSet<PathNode> closedSet = new();
+        openSet.Add(startNode);
 
-        while(openNode.Count > 0)
+        while (openSet.Count > 0)
         {
-            PathNode currentNode = openNode[0];
-            for (int i = 1; i < openNode.Count; i++)
+            PathNode node = openSet[0];
+            for (int i = 1; i < openSet.Count; i++)
             {
-                if (openNode[i].fCost < currentNode.fCost || openNode[i].fCost == currentNode.fCost && openNode[i].hCost < currentNode.hCost)
+                if (openSet[i].FCost < node.FCost || openSet[i].FCost == node.FCost)
                 {
-                    currentNode = openNode[i];
+                    if (openSet[i].hCost < node.hCost)
+                        node = openSet[i];
                 }
             }
 
-            openNode.Remove(currentNode);
-            closedNode.Add(currentNode);
+            openSet.Remove(node);
+            closedSet.Add(node);
 
-            if (currentNode == endNode)
+            if (node == targetNode)
             {
-                RetracePath(startNode, endNode);
+                RetracePath(startNode, targetNode);
+                return;
             }
 
-            foreach (PathNode neighbour in grid.GetNeighbourNodes(currentNode))
+            foreach (PathNode neighbour in grid.GetNeighbours(node))
             {
-                if (!neighbour.pWalkable || closedNode.Contains(neighbour))
+                if (!neighbour.walkable || closedSet.Contains(neighbour))
                 {
                     continue;
                 }
 
-                int newCostToNeighbour = currentNode.gCost + GetDistanceBetweenNodes(currentNode, neighbour);
-                if (newCostToNeighbour < neighbour.gCost || !openNode.Contains(neighbour))
+                int newCostToNeighbour = node.gCost + GetDistance(node, neighbour);
+                if (newCostToNeighbour < neighbour.gCost || !openSet.Contains(neighbour))
                 {
                     neighbour.gCost = newCostToNeighbour;
-                    neighbour.hCost = GetDistanceBetweenNodes(neighbour, endNode);
-                    neighbour.pParentNode = currentNode;
+                    neighbour.hCost = GetDistance(neighbour, targetNode);
+                    neighbour.parent = node;
 
-                    if (!openNode.Contains(neighbour))
-                    {
-                        openNode.Add(neighbour);
-                    }
+                    if (!openSet.Contains(neighbour))
+                        openSet.Add(neighbour);
                 }
             }
         }
     }
-    
-    void RetracePath(PathNode start, PathNode end)
-    {
-        List<PathNode> path = new List<PathNode>();
-        PathNode currentNode = end;
 
-        while (currentNode != start)
+    void RetracePath(PathNode startNode, PathNode endNode)
+    {
+        List<PathNode> path = new();
+        PathNode currentNode = endNode;
+
+        while (currentNode != startNode)
         {
             path.Add(currentNode);
-            currentNode = currentNode.pParentNode;
+            currentNode = currentNode.parent;
         }
         path.Reverse();
 
-        grid.pPath = path;
+        grid.path = path;
+
     }
 
-    int GetDistanceBetweenNodes(PathNode nodeA, PathNode nodeB)
+    int GetDistance(PathNode nodeA, PathNode nodeB)
     {
-        int distanceX = Mathf.Abs(nodeA.pGridX - nodeB.pGridX);
-        int distanceY = Mathf.Abs(nodeA.pGridY - nodeB.pGridY);
+        int dstX = Mathf.Abs(nodeA.gridX - nodeB.gridX);
+        int dstY = Mathf.Abs(nodeA.gridY - nodeB.gridY);
 
-        if (distanceX > distanceY)
-        {
-            return 14 * distanceY + 10 * (distanceX - distanceY);
-        }
-        return 14 * distanceX + 10 * (distanceY - distanceX);
+        if (dstX > dstY)
+            return 14 * dstY + 10 * (dstX - dstY);
+        return 14 * dstX + 10 * (dstY - dstX);
     }
 }
