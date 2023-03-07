@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
-public class PathNode
+public class PathNode : IHeapItem<PathNode>
 {
 
     public bool walkable;
@@ -12,6 +12,7 @@ public class PathNode
     public int gCost;
     public int hCost;
     public PathNode parent;
+    int heapIndex;
 
     public PathNode(bool _walkable, Vector3 _worldPos, int _gridX, int _gridY)
     {
@@ -21,11 +22,33 @@ public class PathNode
         gridY = _gridY;
     }
 
-    public int FCost
+    public int fCost
     {
         get
         {
             return gCost + hCost;
         }
+    }
+
+    public int HeapIndex
+    {
+        get
+        {
+            return heapIndex;
+        }
+        set
+        {
+            heapIndex = value;
+        }
+    }
+
+    public int CompareTo(PathNode nodeToCompare)
+    {
+        int compare = fCost.CompareTo(nodeToCompare.fCost);
+        if (compare == 0)
+        {
+            compare = hCost.CompareTo(nodeToCompare.hCost);
+        }
+        return -compare;
     }
 }
