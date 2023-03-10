@@ -8,6 +8,7 @@ TagManager:
   - wp
   - Base
   - Test Wall
+  - Follow
   layers:
   - Default
   - TransparentFX
