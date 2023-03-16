@@ -12,19 +12,19 @@ public class GridTileSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        for (int j = 0; j < 20; j++)
+        for (int j = 0; j < 19; j++)
         {
-            for (int i = 0; i < 20; i++)
+            for (int i = 0; i < 19; i++)
             {
-                if (i <= 6 || i >= 13 || j <= 6 || j >= 13)
+                if (i <= 6 || i >= 12 || j <= 6 || j >= 12)
                 {                    
-                    if ((i == 0 && j != 9 && j != 10) || (i == 19 && j != 9 && j != 10) || (j == 0 && i != 9 && i != 10) || (j == 19 && i != 9 && i != 10))
+                    if ((i == 0 && j != 9) || (i == 18 && j != 9) || (j == 0 && i != 9) || (j == 18 && i != 9))
                     {
                         Instantiate(WallClass, TilePosition, transform.rotation);
                     }
                     else
                     {
-                        if((i != 9 || j != 0) && (i != 10 || j != 0) && (i != 9 || j != 19) && (i != 10 || j != 19) && (j != 9 || i != 0) && (j != 10 || i != 0) && (j != 9 || i != 19) && (j != 10 || i != 19))
+                        if((i != 9 || j != 0) && (i != 10 || j != 0) && (i != 9 || j != 18) && (i != 10 || j != 18) && (j != 9 || i != 0) && (j != 10 || i != 0) && (j != 9 || i != 18) && (j != 10 || i != 18))
                         {
                             Instantiate(TileClass, TilePosition, transform.rotation);
                         }
