@@ -4,23 +4,23 @@ using UnityEngine;
 
 namespace BehaviorTree
 {
-    public abstract class Tree : MonoBehaviour
+
+    public abstract class OverallGameTree : Tree
     {
-
-        private Node _root = null;
-
-        protected void Start()
+        protected override Node SetupTree()
         {
-            _root = SetupTree();
-        }
-
-        private void Update()
+            Node root = new Selector(new List<Node>
         {
-            if (_root != null)
-                _root.Evaluate();
-        }
+            new Sequence(new List<Node>
+            {
+                //new CheckEnemyInFOVRange(transform),
+                //new TaskGoToTarget(transform),
+            }),
+            //new TaskPatrol(transform, waypoints),
+        });
 
-        protected abstract Node SetupTree();
+            return root;
+        }
 
     }
 
