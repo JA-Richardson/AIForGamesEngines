@@ -4,10 +4,26 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    private static GameManager _instance;
+    public static GameManager Instance
+    {
+        get
+        {
+            if (_instance is null)
+            {
+                Debug.LogError("Game Manager Is Null!");
+            }
+            return _instance;
+        }
+    }
+
+    int baseHealth = 100;
+
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        _instance = this;   
     }
 
     // Update is called once per frame
