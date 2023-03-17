@@ -137,7 +137,7 @@ GameObject:
   - component: {fileID: 44887824}
   m_Layer: 0
   m_Name: Plane (3)
-  m_TagString: Test Wall
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -235,7 +235,7 @@ GameObject:
   - component: {fileID: 266936607}
   m_Layer: 0
   m_Name: Plane
-  m_TagString: Test Wall
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -333,7 +333,7 @@ GameObject:
   - component: {fileID: 666046086}
   m_Layer: 0
   m_Name: Plane (1)
-  m_TagString: Test Wall
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -582,7 +582,7 @@ GameObject:
   - component: {fileID: 1065735441}
   m_Layer: 0
   m_Name: Plane (2)
-  m_TagString: Test Wall
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -781,7 +781,7 @@ GameObject:
   - component: {fileID: 1421013793}
   m_Layer: 0
   m_Name: Plane (4)
-  m_TagString: Test Wall
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1121,7 +1121,7 @@ GameObject:
   - component: {fileID: 1786665480}
   m_Layer: 0
   m_Name: Plane (5)
-  m_TagString: Test Wall
+  m_TagString: Obstacle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1212,6 +1212,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4417495925961698813, guid: b99abfa00b17615408af40536f0913e8, type: 3}
+      propertyPath: boid
+      value: 
+      objectReference: {fileID: 5311418124619672470, guid: 7b6cc4b6bd54613419a55a4f25d9d0d6, type: 3}
     - target: {fileID: 5788389785419871604, guid: b99abfa00b17615408af40536f0913e8, type: 3}
       propertyPath: m_Name
       value: Spawner

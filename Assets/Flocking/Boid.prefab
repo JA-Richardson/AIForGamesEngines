@@ -502,9 +502,8 @@ GameObject:
   - component: {fileID: 5311418124619672466}
   - component: {fileID: 5311418124619672469}
   - component: {fileID: 5311418124619672468}
-  - component: {fileID: 5311418124619672471}
-  - component: {fileID: -8886579802762476390}
   - component: {fileID: 3444636680529706051}
+  - component: {fileID: -1890665559020673376}
   m_Layer: 0
   m_Name: Boid
   m_TagString: Boid
@@ -610,34 +609,6 @@ MonoBehaviour:
   _data:
     _json: '{"declarations":{"collection":{"$content":[],"$version":"A"},"$version":"A"}}'
     _objectReferences: []
---- !u!114 &5311418124619672471
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5311418124619672470}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bf701fae496ad0242b3d1ef6db8e7e99, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  direction: {x: 0.49999997, y: 0.49999997, z: -0.49999997, w: 0.49999997}
-  position: {x: 0, y: 0, z: 0}
-  neighbours: []
---- !u!135 &-8886579802762476390
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5311418124619672470}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &3444636680529706051
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -654,6 +625,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &-1890665559020673376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5311418124619672470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf701fae496ad0242b3d1ef6db8e7e99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 8
 --- !u!1 &7003540275463749347
 GameObject:
   m_ObjectHideFlags: 0

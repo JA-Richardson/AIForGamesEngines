@@ -7,8 +7,8 @@ TagManager:
   - Boid
   - wp
   - Base
-  - Test Wall
   - Follow
+  - Obstacle
   layers:
   - Default
   - TransparentFX
