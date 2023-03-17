@@ -7,13 +7,13 @@ public class Boid_Script : MonoBehaviour
 
     float speed = 20f;
     float rotationSpeed = 4.0f;
-    float neighborDistance = 25.0f;
-    float avoidanceDistance = 5.0f;
-    float separationWeight = 1.5f;
+    float neighborDistance = 8.0f;
+    float avoidanceDistance = 3.0f;
+    float separationWeight = 1.0f;
     float alignmentWeight = 1.0f;
-    float cohesionWeight = 1.0f;
-    float avoidanceWeight = 10.0f;
-    float raycastDistance = 20f;
+    float cohesionWeight = 0.9f;
+    float avoidanceWeight = 5.0f;
+    float raycastDistance = 5f;
     float spawnRange = 10;
     public LayerMask obstacleLayer;
     Vector3 separation;
@@ -32,9 +32,15 @@ public class Boid_Script : MonoBehaviour
 
         this.transform.rotation = Random.rotation;
 
-         // Get all the boids in the scene
+
         boids = GameObject.FindGameObjectsWithTag("Boid");
 
+        
+        Color newColor = new Color(Random.value, Random.value, Random.value, 1.0f);
+
+        var boidRenderer = this.GetComponent<Renderer>();
+
+        boidRenderer.material.color = newColor;
 
     }
 
@@ -51,7 +57,7 @@ public class Boid_Script : MonoBehaviour
         int cohesionCount = 0;
 
 
-        // Calculate the separation, alignment, and cohesion vectors
+
         foreach (GameObject boid in boids)
         {
             if (boid != this.gameObject)
@@ -72,16 +78,37 @@ public class Boid_Script : MonoBehaviour
                 }
             }
         }
-        // Calculate the obstacle avoidance vector
+
         RaycastHit hit;
         if (Physics.Raycast(this.transform.position, this.transform.up, out hit, raycastDistance, obstacleLayer))
         {
-            avoidance = Vector3.Reflect(hit.normal, this.transform.up);
+            avoidance += hit.normal;
+        }
+
+        if (Physics.Raycast(this.transform.position, this.transform.up+new Vector3(10,0,0), out hit, raycastDistance, obstacleLayer))
+        {
+            avoidance += hit.normal;
+        }
+        if (Physics.Raycast(this.transform.position, this.transform.up + new Vector3(-10, 0, 0), out hit, raycastDistance, obstacleLayer))
+        {
+            avoidance += hit.normal;
+        }
+        if (Physics.Raycast(this.transform.position, this.transform.up + new Vector3(0, 0, 10), out hit, raycastDistance, obstacleLayer))
+        {
+            avoidance += hit.normal;
+        }
+        if (Physics.Raycast(this.transform.position, this.transform.up + new Vector3(0, 0, -10), out hit, raycastDistance, obstacleLayer))
+        {
+            avoidance += hit.normal;
+        }
+        if(avoidance!= Vector3.zero)
+        {
             avoidance.Normalize();
             avoidance *= avoidanceWeight;
         }
 
-        // Apply the weights to the separation, alignment, and cohesion vectors
+
+
         if (separationCount > 0)
         {
             separation /= separationCount;
@@ -106,7 +133,7 @@ public class Boid_Script : MonoBehaviour
 
 
 
-        // Apply the forces to the boid
+
         Vector3 force = separation + alignment + cohesion + avoidance;
         this.transform.up = Vector3.Slerp(this.transform.up, force, Time.deltaTime * rotationSpeed);
         this.transform.position += this.transform.up * Time.deltaTime * speed;
