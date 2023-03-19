@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    private static GameManager _instance;
+    public static GameManager _instance;
     public static GameManager Instance
     {
         get
@@ -17,7 +17,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    int baseHealth = 100;
+    public int baseHealth = 100;
 
 
     // Start is called before the first frame update

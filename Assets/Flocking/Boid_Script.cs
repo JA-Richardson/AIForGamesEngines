@@ -1,21 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class Boid_Script : MonoBehaviour
 {
 
-    float speed = 20f;
-    float rotationSpeed = 4.0f;
-    float neighborDistance = 8.0f;
-    float avoidanceDistance = 3.0f;
+    float speed = 10f;
+    float rotationSpeed = 5;
+    float neighborDistance = 30.0f;
+    float separationDistance = 3.0f;
     float separationWeight = 1.0f;
-    float alignmentWeight = 1.0f;
-    float cohesionWeight = 0.9f;
-    float avoidanceWeight = 5.0f;
-    float raycastDistance = 5f;
+    float alignmentWeight = 0.6f;
+    float cohesionWeight = 0.6f;
+    float avoidanceWeight = 4.0f;
+    float raycastDistance = 10.0f;
     float spawnRange = 10;
+
+    int separationCount = 0;
+    int alignmentCount = 0;
+    int cohesionCount = 0;
+
     public LayerMask obstacleLayer;
+    public GameObject flockFollow;
     Vector3 separation;
     Vector3 alignment;
     Vector3 cohesion;
@@ -42,6 +49,7 @@ public class Boid_Script : MonoBehaviour
 
         boidRenderer.material.color = newColor;
 
+
     }
 
     void Update()
@@ -52,10 +60,10 @@ public class Boid_Script : MonoBehaviour
         alignment = Vector3.zero;
         cohesion = Vector3.zero;
         avoidance = Vector3.zero;
-        int separationCount = 0;
-        int alignmentCount = 0;
-        int cohesionCount = 0;
 
+        separationCount = 0;
+        alignmentCount = 0;
+        cohesionCount = 0;
 
 
         foreach (GameObject boid in boids)
@@ -64,7 +72,7 @@ public class Boid_Script : MonoBehaviour
             {
                 float distance = Vector3.Distance(boid.transform.position, this.transform.position);
 
-                if (distance < avoidanceDistance)
+                if (distance < separationDistance)
                 {
                     separation += this.transform.position - boid.transform.position;
                     separationCount++;
@@ -82,28 +90,28 @@ public class Boid_Script : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(this.transform.position, this.transform.up, out hit, raycastDistance, obstacleLayer))
         {
-            avoidance += hit.normal;
+            avoidance += hit.normal / Mathf.Pow(hit.distance, 2); 
         }
 
         if (Physics.Raycast(this.transform.position, this.transform.up+new Vector3(10,0,0), out hit, raycastDistance, obstacleLayer))
         {
-            avoidance += hit.normal;
+            avoidance += hit.normal / Mathf.Pow(hit.distance, 2); 
         }
         if (Physics.Raycast(this.transform.position, this.transform.up + new Vector3(-10, 0, 0), out hit, raycastDistance, obstacleLayer))
         {
-            avoidance += hit.normal;
+            avoidance += hit.normal / Mathf.Pow(hit.distance, 2);
         }
         if (Physics.Raycast(this.transform.position, this.transform.up + new Vector3(0, 0, 10), out hit, raycastDistance, obstacleLayer))
         {
-            avoidance += hit.normal;
+            avoidance += hit.normal / Mathf.Pow(hit.distance, 2);
         }
         if (Physics.Raycast(this.transform.position, this.transform.up + new Vector3(0, 0, -10), out hit, raycastDistance, obstacleLayer))
         {
-            avoidance += hit.normal;
+            avoidance += hit.normal / Mathf.Pow(hit.distance, 2);
         }
         if(avoidance!= Vector3.zero)
         {
-            avoidance.Normalize();
+            //avoidance.Normalize();
             avoidance *= avoidanceWeight;
         }
 
