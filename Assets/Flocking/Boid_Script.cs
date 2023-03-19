@@ -6,16 +6,16 @@ using UnityEngine;
 public class Boid_Script : MonoBehaviour
 {
 
-    float speed = 10f;
-    float rotationSpeed = 5;
-    float neighborDistance = 30.0f;
-    float separationDistance = 3.0f;
-    float separationWeight = 1.0f;
-    float alignmentWeight = 0.6f;
-    float cohesionWeight = 0.6f;
-    float avoidanceWeight = 4.0f;
-    float raycastDistance = 10.0f;
-    float spawnRange = 10;
+    public float speed = 20f;
+    public float rotationSpeed = 5;
+    public float neighborDistance = 30.0f;
+    public float separationDistance = 3.0f;
+    public float separationWeight = 1.0f;
+    public float alignmentWeight = 0.6f;
+    public float cohesionWeight = 0.6f;
+    public float avoidanceWeight = 4.0f;
+    public float raycastDistance = 10.0f;
+    public float spawnRange = 10;
 
     int separationCount = 0;
     int alignmentCount = 0;
@@ -74,7 +74,7 @@ public class Boid_Script : MonoBehaviour
 
                 if (distance < separationDistance)
                 {
-                    separation += this.transform.position - boid.transform.position;
+                    separation += (this.transform.position - boid.transform.position) /Mathf.Pow(distance,2);
                     separationCount++;
                 }
                 else if (distance < neighborDistance)

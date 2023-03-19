@@ -1701,6 +1701,10 @@ PrefabInstance:
       propertyPath: boid
       value: 
       objectReference: {fileID: 5311418124619672470, guid: 7b6cc4b6bd54613419a55a4f25d9d0d6, type: 3}
+    - target: {fileID: 4417495925961698813, guid: b99abfa00b17615408af40536f0913e8, type: 3}
+      propertyPath: spawnAmount
+      value: 300
+      objectReference: {fileID: 0}
     - target: {fileID: 5788389785419871604, guid: b99abfa00b17615408af40536f0913e8, type: 3}
       propertyPath: m_Name
       value: Spawner

@@ -637,9 +637,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf701fae496ad0242b3d1ef6db8e7e99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  speed: 30
+  rotationSpeed: 4
+  neighborDistance: 7
+  separationDistance: 5
+  separationWeight: 1
+  alignmentWeight: 0.6
+  cohesionWeight: 0.2
+  avoidanceWeight: 10
+  raycastDistance: 7
+  spawnRange: 1
   obstacleLayer:
     serializedVersion: 2
     m_Bits: 72
+  flockFollow: {fileID: 0}
 --- !u!1 &7003540275463749347
 GameObject:
   m_ObjectHideFlags: 0
