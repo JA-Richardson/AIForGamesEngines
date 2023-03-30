@@ -101,4 +101,10 @@ public class PathGrid : MonoBehaviour
         }
         
     }
+
+    public void Update()
+    {
+        
+        CreateGrid();
+    }
 }
