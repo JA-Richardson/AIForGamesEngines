@@ -9,6 +9,7 @@ TagManager:
   - Base
   - Follow
   - Obstacle
+  - Enemy
   layers:
   - Default
   - TransparentFX
