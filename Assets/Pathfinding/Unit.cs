@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using UnityEngine;
 
 public class Unit : MonoBehaviour
@@ -8,12 +9,26 @@ public class Unit : MonoBehaviour
     float speed = 5f;
     Vector3[] path;
     int targetIndex;
+    Stopwatch timer = new();
 
     void Start()
     {
         PathManager.ReqPath(transform.position, target.position, OnPathFound);
+        timer.Start();
     }
-    
+
+    void Update()
+    {
+
+        if (timer.ElapsedMilliseconds > 1000)
+        {
+            timer.Reset();
+            timer.Start();
+            PathManager.ReqPath(transform.position, target.position, OnPathFound);
+        }
+        
+    }
+
     public void OnPathFound(Vector3[] newPath, bool pathSuccessful)
     {
         if (pathSuccessful)
@@ -21,6 +36,7 @@ public class Unit : MonoBehaviour
             path = newPath;
             StopCoroutine("FollowPath");
             StartCoroutine("FollowPath");
+            UnityEngine.Debug.Log("Path Found");
         }
     }
 

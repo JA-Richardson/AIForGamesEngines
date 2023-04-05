@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
+using System.Diagnostics;
 
 public class PathGrid : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class PathGrid : MonoBehaviour
     public Vector2 gridWorldSize;
     public float nodeRadius;
     PathNode[,] grid;
+    //public float timer = 0.5f;
+    Stopwatch timer = new();
 
     float nodeDiameter;
     int gridSizeX, gridSizeY;
@@ -21,6 +24,18 @@ public class PathGrid : MonoBehaviour
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
         CreateGrid();
+        timer.Start();
+    }
+    
+    void Update()
+    {
+        if (timer.ElapsedMilliseconds > 1000)
+        {
+            timer.Reset();
+            timer.Start();
+            CreateGrid();
+        }
+        //UnityEngine.Debug.Log(timer.ElapsedMilliseconds);
     }
 
     public int MaxSize
