@@ -38,7 +38,11 @@ public class BulletScript : MonoBehaviour
     {
         GameObject effectIns = (GameObject)Instantiate(impactEffect, transform.position, transform.rotation);
         Destroy(effectIns, 2f);
-        Destroy(target.gameObject);
+
+        EnemyScript enemy = target.gameObject.GetComponent<EnemyScript>();
+        enemy.Damage(1.0f);
+
+        //Destroy(target.gameObject);
         Destroy(gameObject);
     }
 
