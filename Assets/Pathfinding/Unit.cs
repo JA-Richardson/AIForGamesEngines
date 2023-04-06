@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
-    public Transform target;
+    Transform target;
+    //public Transform target;
+
     float speed = 5f;
     Vector3[] path;
     int targetIndex;
@@ -13,6 +15,7 @@ public class Unit : MonoBehaviour
 
     void Start()
     {
+        target = (GameObject.FindGameObjectWithTag("Base")).transform;
         PathManager.ReqPath(transform.position, target.position, OnPathFound);
         timer.Start();
     }
