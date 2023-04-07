@@ -61,6 +61,7 @@ public class TurretScript : MonoBehaviour
         }
 
         Vector3 direction = target.position - transform.position;
+        direction.y = direction.y + 90;
         Quaternion lookRotation = Quaternion.LookRotation(direction);
         Vector3 rotation = Quaternion.Lerp(PartToRotate.rotation, lookRotation, Time.deltaTime * turnSpeed).eulerAngles;
         PartToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);

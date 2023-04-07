@@ -34,6 +34,7 @@ public class EnemyScript : MonoBehaviour
 
         if(health <= 0)
         {
+            GameManager.Instance.AddCurrency(1);
             Destroy(gameObject);
             return;
         }

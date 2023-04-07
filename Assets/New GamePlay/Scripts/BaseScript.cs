@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class BaseScript : MonoBehaviour
@@ -21,7 +22,7 @@ public class BaseScript : MonoBehaviour
 
         if (currentHealth <= 0)
         {
-            Destroy(gameObject);
+            SceneManager.LoadScene(0);
             return;
         }
     }

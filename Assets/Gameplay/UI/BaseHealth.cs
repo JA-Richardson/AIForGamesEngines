@@ -16,6 +16,6 @@ public class BaseHealth : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        baseHealthDisplay.text = GameManager._instance.baseHealth.ToString();
+        //baseHealthDisplay.text = GameManager._instance.baseHealth.ToString();
     }
 }
