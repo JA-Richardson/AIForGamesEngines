@@ -17556,6 +17556,15 @@ MonoBehaviour:
     m_Bits: 64
   gridWorldSize: {x: 500, y: 500}
   nodeRadius: 1
+  terrainPenalty:
+  - terrainMask:
+      serializedVersion: 2
+      m_Bits: 0
+    terrainPenalty: 0
+  - terrainMask:
+      serializedVersion: 2
+      m_Bits: 0
+    terrainPenalty: 0
 --- !u!114 &1096063017
 MonoBehaviour:
   m_ObjectHideFlags: 0

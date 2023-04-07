@@ -14,6 +14,7 @@ public class PathGrid : MonoBehaviour
     PathNode[,] grid;
     //public float timer = 0.5f;
     Stopwatch timer = new();
+    public TerrainType[] terrainPenalty;
 
     float nodeDiameter;
     int gridSizeX, gridSizeY;
@@ -57,7 +58,11 @@ public class PathGrid : MonoBehaviour
             {
                 Vector3 worldPoint = worldBottomLeft + Vector3.right * (x * nodeDiameter + nodeRadius) + Vector3.forward * (y * nodeDiameter + nodeRadius);
                 bool walkable = !(Physics.CheckSphere(worldPoint, nodeRadius, unwalkableMask));
-                grid[x, y] = new PathNode(walkable, worldPoint, x, y);
+
+                int movementPenalty = 0;
+
+
+                grid[x, y] = new PathNode(walkable, worldPoint, x, y, movementPenalty);
             }
         }
     }
@@ -116,4 +121,11 @@ public class PathGrid : MonoBehaviour
         }
         
     }
+}
+
+[System.Serializable]
+public class TerrainType
+{
+    public LayerMask terrainMask;
+    public int terrainPenalty;
 }
