@@ -18,6 +18,12 @@ public class GameManager : MonoBehaviour
 
     public GameObject Turret;
 
+    public GameObject Drone;
+
+    public Transform Base;
+
+    public GameObject button;
+
     public static GameManager Instance
     {
         get
@@ -35,6 +41,15 @@ public class GameManager : MonoBehaviour
         currency += currencyToAdd;
     }
 
+    public void SpawnDrone()
+    {
+        if(currency >= 20)
+        {
+            Instantiate(Drone, Base.position, Base.rotation);
+            Destroy(button);
+            currency -= 20;
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
