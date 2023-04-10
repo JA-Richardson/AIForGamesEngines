@@ -32543,6 +32543,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DroneWaypoint (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 543986049170158824, guid: 2450a79de050b684d877e38099bb4480, type: 3}
+      propertyPath: m_TagString
+      value: DroneWP
+      objectReference: {fileID: 0}
     - target: {fileID: 543986049170158827, guid: 2450a79de050b684d877e38099bb4480, type: 3}
       propertyPath: m_RootOrder
       value: 18
@@ -32599,6 +32603,10 @@ PrefabInstance:
     - target: {fileID: 920895714688963402, guid: 403acb71c13de784a9e990f2271f2cb9, type: 3}
       propertyPath: m_Name
       value: DroneWaypoint (6)
+      objectReference: {fileID: 0}
+    - target: {fileID: 920895714688963402, guid: 403acb71c13de784a9e990f2271f2cb9, type: 3}
+      propertyPath: m_TagString
+      value: DroneWP
       objectReference: {fileID: 0}
     - target: {fileID: 920895714688963403, guid: 403acb71c13de784a9e990f2271f2cb9, type: 3}
       propertyPath: m_RootOrder
@@ -32701,6 +32709,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DroneWaypoint (8)
       objectReference: {fileID: 0}
+    - target: {fileID: 1797204938570539263, guid: 409a7f0eb22d1af4aac0e167aea44a66, type: 3}
+      propertyPath: m_TagString
+      value: DroneWP
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 409a7f0eb22d1af4aac0e167aea44a66, type: 3}
 --- !u!1001 &2420525344911949488
@@ -32713,6 +32725,10 @@ PrefabInstance:
     - target: {fileID: 2420525346305628048, guid: cfe8bc4217df7a8478baeaec063bd490, type: 3}
       propertyPath: m_Name
       value: DroneWaypoint (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 2420525346305628048, guid: cfe8bc4217df7a8478baeaec063bd490, type: 3}
+      propertyPath: m_TagString
+      value: DroneWP
       objectReference: {fileID: 0}
     - target: {fileID: 2420525346305628049, guid: cfe8bc4217df7a8478baeaec063bd490, type: 3}
       propertyPath: m_RootOrder
@@ -32815,6 +32831,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DroneWaypoint (3)
       objectReference: {fileID: 0}
+    - target: {fileID: 3503821971436247373, guid: c4bb754e55858b44395c3d67bebcbb71, type: 3}
+      propertyPath: m_TagString
+      value: DroneWP
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c4bb754e55858b44395c3d67bebcbb71, type: 3}
 --- !u!1001 &4246027241121910789
@@ -32884,6 +32904,10 @@ PrefabInstance:
     - target: {fileID: 4729136534489330258, guid: d44400e4632ce874982fe4f9cf86835a, type: 3}
       propertyPath: m_Name
       value: DroneWaypoint (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4729136534489330258, guid: d44400e4632ce874982fe4f9cf86835a, type: 3}
+      propertyPath: m_TagString
+      value: DroneWP
       objectReference: {fileID: 0}
     - target: {fileID: 4729136534489330259, guid: d44400e4632ce874982fe4f9cf86835a, type: 3}
       propertyPath: m_RootOrder
@@ -32985,6 +33009,10 @@ PrefabInstance:
     - target: {fileID: 5830896233482133641, guid: 280c73ac3b5817c418bf098627675b9d, type: 3}
       propertyPath: m_Name
       value: DroneWaypoint (5)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5830896233482133641, guid: 280c73ac3b5817c418bf098627675b9d, type: 3}
+      propertyPath: m_TagString
+      value: DroneWP
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 280c73ac3b5817c418bf098627675b9d, type: 3}
@@ -33151,6 +33179,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DroneWaypoint
       objectReference: {fileID: 0}
+    - target: {fileID: 8216668718933874664, guid: 5f858f334607c0f4089d34d12cd1d1be, type: 3}
+      propertyPath: m_TagString
+      value: DroneWP
+      objectReference: {fileID: 0}
     - target: {fileID: 8216668718933874667, guid: 5f858f334607c0f4089d34d12cd1d1be, type: 3}
       propertyPath: m_RootOrder
       value: 14
@@ -33308,6 +33340,10 @@ PrefabInstance:
     - target: {fileID: 8667095459029367875, guid: e72e6e20dc8f1e2448fad43071a5a372, type: 3}
       propertyPath: m_Name
       value: DroneWaypoint (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8667095459029367875, guid: e72e6e20dc8f1e2448fad43071a5a372, type: 3}
+      propertyPath: m_TagString
+      value: DroneWP
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e72e6e20dc8f1e2448fad43071a5a372, type: 3}

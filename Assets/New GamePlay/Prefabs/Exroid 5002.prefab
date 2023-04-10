@@ -1505,6 +1505,7 @@ GameObject:
   - component: {fileID: 4000013482044542}
   - component: {fileID: 95000011553861148}
   - component: {fileID: -6347152027080263423}
+  - component: {fileID: 6089160639747607540}
   m_Layer: 0
   m_Name: Exroid 5002
   m_TagString: Untagged
@@ -1573,7 +1574,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1000013494599658}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 024d3b72e288c5044a75f10550fe5376, type: 3}
   m_Name: 
@@ -1595,6 +1596,29 @@ MonoBehaviour:
   enemyTag: Enemy
   bulletPrefab: {fileID: 5362155483095646125, guid: 9517c3d5a207a7246ae46fa1cb20ee70, type: 3}
   turnSpeed: 10
+--- !u!114 &6089160639747607540
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1000013494599658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734e615ccca8f2e49983744383f1b395, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  patrolPoints:
+  - {fileID: 4729136534489330259, guid: d44400e4632ce874982fe4f9cf86835a, type: 3}
+  - {fileID: 8667095459029367872, guid: e72e6e20dc8f1e2448fad43071a5a372, type: 3}
+  - {fileID: 3503821971436247372, guid: c4bb754e55858b44395c3d67bebcbb71, type: 3}
+  - {fileID: 543986049170158827, guid: 2450a79de050b684d877e38099bb4480, type: 3}
+  - {fileID: 5830896233482133640, guid: 280c73ac3b5817c418bf098627675b9d, type: 3}
+  - {fileID: 2420525346305628049, guid: cfe8bc4217df7a8478baeaec063bd490, type: 3}
+  - {fileID: 920895714688963403, guid: 403acb71c13de784a9e990f2271f2cb9, type: 3}
+  - {fileID: 1797204938570539260, guid: 409a7f0eb22d1af4aac0e167aea44a66, type: 3}
+  - {fileID: 8216668718933874667, guid: 5f858f334607c0f4089d34d12cd1d1be, type: 3}
+  bulletPrefab: {fileID: 5362155483095646125, guid: 9517c3d5a207a7246ae46fa1cb20ee70, type: 3}
 --- !u!1 &1000014041502296
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,6 +10,7 @@ TagManager:
   - Follow
   - Obstacle
   - Enemy
+  - DroneWP
   layers:
   - Default
   - TransparentFX
