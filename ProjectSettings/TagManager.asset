@@ -11,6 +11,8 @@ TagManager:
   - Obstacle
   - Enemy
   - DroneWP
+  - FxTemporaire
+  - Path
   layers:
   - Default
   - TransparentFX
@@ -19,7 +21,7 @@ TagManager:
   - Water
   - UI
   - Obstacle
-  - 
+  - Turret
   - 
   - 
   - 
