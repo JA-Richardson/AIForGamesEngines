@@ -1,120 +1,149 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class Boid_Script : MonoBehaviour
 {
 
-    public Quaternion direction;
-    public Vector3 position;
-    float speed = 10;
-    float Turningrate = 3;
-    float turnRandomisation = 1;
-    float spawnRange = 25;
-    float timer = 0;
-    
+    public float speed = 20f;
+    public float rotationSpeed = 5;
+    public float neighborDistance = 30.0f;
+    public float separationDistance = 3.0f;
+    public float separationWeight = 1.0f;
+    public float alignmentWeight = 0.6f;
+    public float cohesionWeight = 0.6f;
+    public float avoidanceWeight = 4.0f;
+    public float raycastDistance = 10.0f;
+    public float spawnRange = 10;
 
-    public List<GameObject> neighbours = new List<GameObject>();
-    
-    
+    int separationCount = 0;
+    int alignmentCount = 0;
+    int cohesionCount = 0;
 
-    // Start is called before the first frame update
+    public LayerMask obstacleLayer;
+    public GameObject flockFollow;
+    Vector3 separation;
+    Vector3 alignment;
+    Vector3 cohesion;
+    Vector3 avoidance;
+
+    GameObject[] boids;
+    
     void Start()
     {
-        direction = Random.rotation;
-        this.transform.position = new Vector3(Random.Range(-spawnRange, spawnRange), Random.Range(-spawnRange, spawnRange), Random.Range(-spawnRange, spawnRange));
-        this.transform.rotation = direction;    
+        this.transform.position = new Vector3(
+            Random.Range(-spawnRange, spawnRange),
+            Random.Range(-spawnRange, spawnRange),
+            Random.Range(-spawnRange, spawnRange));
+
+        this.transform.rotation = Random.rotation;
+
+
+        boids = GameObject.FindGameObjectsWithTag("Boid");
+
+        
+        Color newColor = new Color(Random.value, Random.value, Random.value, 1.0f);
+
+        var boidRenderer = this.GetComponent<Renderer>();
+
+        boidRenderer.material.color = newColor;
+
+
     }
-    
-    // Update is called once per frame
+
     void Update()
     {
-        timer += Time.deltaTime;
-
-
-        if (neighbours.Count>0)
-        {
-            if (timer > 0.5)
-            {
-                direction = allignment();
-                timer = 0;
-            }
-
-        }
-        
        
 
+        separation = Vector3.zero;
+        alignment = Vector3.zero;
+        cohesion = Vector3.zero;
+        avoidance = Vector3.zero;
 
-        
-        
-        //adds some random variation to the agents direction 
-        direction = direction * Quaternion.Euler(new Vector3(Random.Range(-turnRandomisation, turnRandomisation), Random.Range(-turnRandomisation, turnRandomisation), Random.Range(-turnRandomisation, turnRandomisation)));
+        separationCount = 0;
+        alignmentCount = 0;
+        cohesionCount = 0;
 
-        // slowly turns the agent to point towards the desired direction
-        transform.rotation = Quaternion.Slerp(transform.rotation, direction, Time.deltaTime * Turningrate);
 
-        //moves the agent forward 
-        transform.Translate(Vector3.up * speed * Time.deltaTime);
-        
-    }
-    Quaternion allignment()
-    {
-
-        Quaternion average = new Quaternion(0, 0, 0, 0);
-        int amount = 0;
-
-        foreach (var neighbour in neighbours)
+        foreach (GameObject boid in boids)
         {
-            amount++;
+            if (boid != this.gameObject)
+            {
+                float distance = Vector3.Distance(boid.transform.position, this.transform.position);
 
-            Quaternion rotation = neighbour.transform.rotation;
-
-            average = Quaternion.Slerp(average, rotation, 1 / amount);
+                if (distance < separationDistance)
+                {
+                    separation += (this.transform.position - boid.transform.position) /Mathf.Pow(distance,2);
+                    separationCount++;
+                }
+                else if (distance < neighborDistance)
+                {
+                    alignment += boid.transform.up;
+                    alignmentCount++;
+                    cohesion += boid.transform.up;
+                    cohesionCount++;
+                }
+            }
         }
-        return average;
-    }
-    Vector3 cohesion()
-    {
-        Vector3 average = new Vector3(0, 0, 0);
 
-        foreach (var neighbour in neighbours)
+        RaycastHit hit;
+        if (Physics.Raycast(this.transform.position, this.transform.up, out hit, raycastDistance, obstacleLayer))
         {
-
-            average += neighbour.transform.position;
-            
-
-            
+            avoidance += hit.normal / Mathf.Pow(hit.distance, 2); 
         }
-        average /= neighbours.Count;
 
-        Vector3 vectorToAverage = average - this.transform.position;
-
-        
-
-        return vectorToAverage;
-
-    }
-    void separation()
-    {
-
-    }
-
-
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.tag == "Boid")
+        if (Physics.Raycast(this.transform.position, this.transform.up+new Vector3(10,0,0), out hit, raycastDistance, obstacleLayer))
         {
-            neighbours.Add(other.gameObject);
-                    Debug.Log("trigger!");
+            avoidance += hit.normal / Mathf.Pow(hit.distance, 2); 
         }
-        
-        
-    }
-    
+        if (Physics.Raycast(this.transform.position, this.transform.up + new Vector3(-10, 0, 0), out hit, raycastDistance, obstacleLayer))
+        {
+            avoidance += hit.normal / Mathf.Pow(hit.distance, 2);
+        }
+        if (Physics.Raycast(this.transform.position, this.transform.up + new Vector3(0, 0, 10), out hit, raycastDistance, obstacleLayer))
+        {
+            avoidance += hit.normal / Mathf.Pow(hit.distance, 2);
+        }
+        if (Physics.Raycast(this.transform.position, this.transform.up + new Vector3(0, 0, -10), out hit, raycastDistance, obstacleLayer))
+        {
+            avoidance += hit.normal / Mathf.Pow(hit.distance, 2);
+        }
+        if(avoidance!= Vector3.zero)
+        {
+            //avoidance.Normalize();
+            avoidance *= avoidanceWeight;
+        }
 
-    private void OnTriggerExit(Collider other)
-    {
-        neighbours.Remove(other.gameObject);
+
+
+        if (separationCount > 0)
+        {
+            separation /= separationCount;
+            separation.Normalize();
+            separation *= separationWeight;
+        }
+
+        if (alignmentCount > 0)
+        {
+            alignment /= alignmentCount;
+            alignment.Normalize();
+            alignment *= alignmentWeight;
+        }
+
+        if (cohesionCount > 0)
+        {
+            cohesion /= cohesionCount;
+            cohesion -= this.transform.position;
+            cohesion.Normalize();
+            cohesion *= cohesionWeight;
+        }
+
+
+
+
+        Vector3 force = separation + alignment + cohesion + avoidance;
+        this.transform.up = Vector3.Slerp(this.transform.up, force, Time.deltaTime * rotationSpeed);
+        this.transform.position += this.transform.up * Time.deltaTime * speed;
     }
 }

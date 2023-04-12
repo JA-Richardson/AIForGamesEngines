@@ -6,8 +6,8 @@ public class Boid_Spawner : MonoBehaviour
 {
     public GameObject boid;
 
-    int i = 0;
-    int spawnAmount = 300;
+
+    public int spawnAmount = 150;
     
     // Start is called before the first frame update
     void Start()
@@ -15,7 +15,7 @@ public class Boid_Spawner : MonoBehaviour
         for (int i = 0; i < spawnAmount; i++)
         {
             Instantiate(boid);
-            i++;
+            
         }
         
         

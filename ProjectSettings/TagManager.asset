@@ -7,8 +7,12 @@ TagManager:
   - Boid
   - wp
   - Base
-  - Test Wall
   - Follow
+  - Obstacle
+  - Enemy
+  - DroneWP
+  - FxTemporaire
+  - Path
   layers:
   - Default
   - TransparentFX
@@ -16,8 +20,8 @@ TagManager:
   - 
   - Water
   - UI
-  - Wall
-  - 
+  - Obstacle
+  - Turret
   - 
   - 
   - 
