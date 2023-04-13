@@ -5,18 +5,22 @@ using UnityEngine;
 
 public class Unit : MonoBehaviour
 {
+    const float minUpdateTime = .2f;
+    const float pathUpdateThreshold = .5f;
     Transform target;
     //public Transform target;
 
-    float speed = 5f;
-    Vector3[] path;
-    int targetIndex;
+    public float speed = 5f;
+    public float turnDist = 1f;
+    public float turnSpeed = 1f;
+    Path path;
     Stopwatch timer = new();
+    public float stoppingDist = 5f;
 
     void Start()
     {
         target = (GameObject.FindGameObjectWithTag("Base")).transform;
-        PathManager.ReqPath(transform.position, target.position, OnPathFound);
+        PathManager.ReqPath(new PathReq (transform.position, target.position, OnPathFound));
         timer.Start();
     }
 
@@ -27,16 +31,16 @@ public class Unit : MonoBehaviour
         {
             timer.Reset();
             timer.Start();
-            PathManager.ReqPath(transform.position, target.position, OnPathFound);
+            PathManager.ReqPath(new PathReq(transform.position, target.position, OnPathFound));
         }
-        
+
     }
 
-    public void OnPathFound(Vector3[] newPath, bool pathSuccessful)
+    public void OnPathFound(Vector3[] waypoints, bool pathSuccessful)
     {
         if (pathSuccessful)
         {
-            path = newPath;
+            path = new Path(waypoints, transform.position, turnDist, stoppingDist);
             StopCoroutine("FollowPath");
             StartCoroutine("FollowPath");
             UnityEngine.Debug.Log("Path Found");
@@ -45,19 +49,40 @@ public class Unit : MonoBehaviour
 
     IEnumerator FollowPath()
     {
-        Vector3 currentWaypoint = path[0];
-        while(true)
+        float speedPercent = 1;
+        bool followingPath = true;
+        int pathIndex = 0;
+        transform.LookAt(path.lookPoints[0]);
+        while (followingPath)
         {
-            if (transform.position == currentWaypoint)
+            Vector2 pos2D = new Vector2(transform.position.x, transform.position.z);
+            while (path.turnBoundaries[pathIndex].CrossedLine(pos2D))
             {
-                targetIndex++;
-                if (targetIndex >= path.Length)
+                if (pathIndex == path.finishLineIndex)
                 {
-                    yield break;
+                    followingPath = false;
+                    break;
                 }
-                currentWaypoint = path[targetIndex];
+                else
+                {
+                    pathIndex++;
+                }
             }
-            transform.position = Vector3.MoveTowards(transform.position, currentWaypoint, speed * Time.deltaTime);
+            if (followingPath)
+            {
+                if (pathIndex >= path.slowDownIndex && stoppingDist > 0)
+                {
+                    speedPercent = Mathf.Clamp01(path.turnBoundaries[path.finishLineIndex].DistanceToEnd(pos2D) / stoppingDist);
+                    if (speedPercent < 0.01f)
+                    {
+                        followingPath = false;
+                    }
+                }
+                
+                Quaternion targetRotation = Quaternion.LookRotation(path.lookPoints[pathIndex] - transform.position);
+                transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * turnSpeed);
+                transform.Translate(Vector3.forward  * Time.deltaTime * speed * speedPercent, Space.Self);
+            }
             yield return null;
         }
         
@@ -67,19 +92,27 @@ public class Unit : MonoBehaviour
     {
         if (path != null)
         {
-            for (int i = targetIndex; i < path.Length; i++)
-            {
-                Gizmos.color = Color.black;
-                Gizmos.DrawCube(path[i], Vector3.one);
+            path.DrawWithGizmos();
+        }
+    }
 
-                if (i == targetIndex)
-                {
-                    Gizmos.DrawLine(transform.position, path[i]);
-                }
-                else
-                {
-                    Gizmos.DrawLine(path[i - 1], path[i]);
-                }
+    //coroutine for updating path if target moves, not used due to be a tower defense game
+    IEnumerator UpdatePath()
+    {
+        if (Time.timeSinceLevelLoad < .3f)
+        {
+            yield return new WaitForSeconds(.3f);
+        }
+        PathManager.ReqPath(new PathReq(transform.position, target.position, OnPathFound));
+        float sqrMoveThreshol = pathUpdateThreshold * pathUpdateThreshold;
+        Vector3 targetPosOld = target.position;
+        while (true)
+        {
+            yield return new WaitForSeconds(minUpdateTime);
+            if ((target.position = targetPosOld).sqrMagnitude > sqrMoveThreshol)
+            {
+                PathManager.ReqPath(new PathReq(transform.position, target.position, OnPathFound));
+                targetPosOld = target.position;
             }
         }
     }

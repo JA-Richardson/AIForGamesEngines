@@ -8,28 +8,23 @@ using System;
 public class PathFinding : MonoBehaviour
 {
 
-    PathManager ReqManager;
+    
     PathGrid grid;
 
     void Awake()
     {
-        ReqManager = GetComponent<PathManager>();
+        
         grid = GetComponent<PathGrid>();
     }
 
-    public void StartFindPath(Vector3 startPos, Vector3 targetPos)
-    {
-        StartCoroutine(FindPath(startPos, targetPos));
-    }
-
-    IEnumerator FindPath(Vector3 startPos, Vector3 targetPos)
+    public void FindPath(PathReq request, Action<PathResult> callback)
     {
 
         Vector3[] waypoints = new Vector3[0];
         bool pathSuccess = false;
 
-        PathNode startNode = grid.NodeFromWorldPoint(startPos);
-        PathNode targetNode = grid.NodeFromWorldPoint(targetPos);
+        PathNode startNode = grid.NodeFromWorldPoint(request.pathStart);
+        PathNode targetNode = grid.NodeFromWorldPoint(request.pathEnd);
         if (startNode.walkable && targetNode.walkable)
         {
 
@@ -72,12 +67,13 @@ public class PathFinding : MonoBehaviour
                 }
             }
         }
-        yield return null;
+        
         if(pathSuccess)
         {
             waypoints = RetracePath(startNode, targetNode);
+            pathSuccess = waypoints.Length > 0;
         }
-        ReqManager.FinishedProcessingPath(waypoints, pathSuccess);
+        callback(new PathResult(waypoints, pathSuccess, request.callback));
     }
 
     Vector3[] RetracePath(PathNode startNode, PathNode endNode)
