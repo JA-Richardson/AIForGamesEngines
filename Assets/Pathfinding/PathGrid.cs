@@ -47,7 +47,7 @@ public class PathGrid : MonoBehaviour
             timer.Start();
             CreateGrid();
         }
-        //UnityEngine.Debug.Log(timer.ElapsedMilliseconds);
+        UnityEngine.Debug.Log(timer.ElapsedMilliseconds);
     }
 
     public int MaxSize

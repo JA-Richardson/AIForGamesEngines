@@ -24,7 +24,7 @@ public struct PathLine
         }
         else 
         { 
-            perpendicularGradient = dx / dy;
+            perpendicularGradient = dy / dx;
         }
 
         if (perpendicularGradient == 0)
@@ -36,7 +36,7 @@ public struct PathLine
             gradient = -1 / perpendicularGradient;
         }
 
-        y_intercept = linePoint.y = gradient * linePoint.x;
+        y_intercept = linePoint.y - gradient * linePoint.x;
         linePoint1 = linePoint;
         linePoint2 = linePoint + new Vector2(1, gradient);
         approachSide = false;
@@ -59,6 +59,14 @@ public struct PathLine
         Vector3 lineCenter = new Vector3(linePoint1.x, 0, linePoint1.y) + Vector3.up;
         Gizmos.DrawLine(lineCenter - lineDir * length / 2f, lineCenter + lineDir * length / 2f);
         
+    }
+
+    public float DistanceToEnd(Vector2 p)
+    {
+        float y_interceptPerpendicular = p.y - perpendicularGradient * p.x;
+        float intersectX = (y_interceptPerpendicular - y_intercept) / (gradient - perpendicularGradient);
+        float intersectY = gradient * intersectX + y_intercept;
+        return Vector2.Distance(p, new Vector2(intersectX, intersectY));
     }
 
 }
