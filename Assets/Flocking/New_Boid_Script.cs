@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -40,20 +39,20 @@ public class New_Boid_Script : MonoBehaviour
         {
             Vector3 flockVelocity = new Vector3(0, 0, 0);
 
-            flockVelocity += allignment()*a;
-            flockVelocity += cohesion()*c;
-            flockVelocity += Separation()*s;
-            
-            
-            flockVelocity.Normalize();
-            flockVelocity += Avoid()*20;
-            flockVelocity.Normalize();
-
-            flockVelocity += Follow()*20;
-            flockVelocity.Normalize();
+            flockVelocity += allignment() * a;
+            flockVelocity += cohesion() * c;
+            flockVelocity += Separation() * s;
 
 
-            
+            flockVelocity.Normalize();
+            flockVelocity += Avoid() * 20;
+            flockVelocity.Normalize();
+
+            flockVelocity += Follow() * 20;
+            flockVelocity.Normalize();
+
+
+
             Velocity = Vector3.Lerp(Velocity, flockVelocity, turningRate * Time.deltaTime);
             Velocity.Normalize();
 
@@ -109,10 +108,10 @@ public class New_Boid_Script : MonoBehaviour
 
         foreach (var neighbour in neighbours)
         {
-            
-                 average += (this.transform.position - neighbour.transform.position);
-            
-           
+
+            average += (this.transform.position - neighbour.transform.position);
+
+
 
 
 
@@ -170,7 +169,7 @@ public class New_Boid_Script : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-       
+
         if (other.tag == "Boid")
         {
             neighbours.Remove(other.gameObject);

@@ -1,22 +1,19 @@
-using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using System.Diagnostics;
+using UnityEngine;
 
 public class PathGrid : MonoBehaviour
 {
 
     public bool onlyDisplayPathGizmos;
-    public LayerMask unwalkableMask;
-    public Vector2 gridWorldSize;
     public float nodeRadius;
     PathNode[,] grid;
-    //public float timer = 0.5f;
-    Stopwatch timer = new();
+    readonly Stopwatch timer = new();
     public TerrainType[] terrainPenalty;
+    readonly Dictionary<int, int> walkableRegionsDictionary = new();
     LayerMask walkableMask;
-    Dictionary<int, int> walkableRegionsDictionary = new Dictionary<int, int>();
+    public LayerMask unwalkableMask;
+    public Vector2 gridWorldSize;
 
     float nodeDiameter;
     int gridSizeX, gridSizeY;
@@ -38,7 +35,7 @@ public class PathGrid : MonoBehaviour
         CreateGrid();
         timer.Start();
     }
-    
+
     void Update()
     {
         if (timer.ElapsedMilliseconds > 1000)
@@ -72,20 +69,19 @@ public class PathGrid : MonoBehaviour
 
                 int movementPenalty = 0;
 
-                
-                
-                Ray ray = new Ray(worldPoint + Vector3.up * 50, Vector3.down);
-                RaycastHit hit;
-                if (Physics.Raycast(ray, out hit, 100, walkableMask))
+
+
+                Ray ray = new(worldPoint + Vector3.up * 50, Vector3.down);
+                if (Physics.Raycast(ray, out RaycastHit hit, 100, walkableMask))
                 {
                     walkableRegionsDictionary.TryGetValue(hit.collider.gameObject.layer, out movementPenalty);
-                        
+
                 }
                 if (!walkable)
                 {
                     movementPenalty += obstacleProximityPenalty;
                 }
-                
+
 
 
                 grid[x, y] = new PathNode(walkable, worldPoint, x, y, movementPenalty);
@@ -96,7 +92,7 @@ public class PathGrid : MonoBehaviour
 
     public List<PathNode> GetNeighbours(PathNode node)
     {
-        List<PathNode> neighbours = new List<PathNode>();
+        List<PathNode> neighbours = new();
 
         for (int x = -1; x <= 1; x++)
         {
@@ -131,7 +127,7 @@ public class PathGrid : MonoBehaviour
         return grid[x, y];
     }
 
-  
+
     void OnDrawGizmos()
     {
         Gizmos.DrawWireCube(transform.position, new Vector3(gridWorldSize.x, 1, gridWorldSize.y));
@@ -143,13 +139,13 @@ public class PathGrid : MonoBehaviour
             {
 
                 Gizmos.color = Color.Lerp(Color.white, Color.black, Mathf.InverseLerp(penaltyMin, penaltyMax, n.movementPenalty));
-                
+
                 Gizmos.color = (n.walkable) ? Gizmos.color : Color.red;
-                    
+
                 Gizmos.DrawCube(n.worldPosition, Vector3.one * (nodeDiameter));
             }
         }
-        
+
     }
 
     void Blur(int blurSize)

@@ -1,13 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class TurretScript : MonoBehaviour
 {
 
     [Header("Attributes")]
-    
+
     public float range = 15.0f;
     public float fireRate = 1;
     private float fireCountdown = 0f;
@@ -20,8 +17,8 @@ public class TurretScript : MonoBehaviour
     private Transform target;
     public GameObject bulletPrefab;
     public Transform firePoint;
-    
-    
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -30,12 +27,12 @@ public class TurretScript : MonoBehaviour
         GameObject[] path = GameObject.FindGameObjectsWithTag("Path");
         foreach (GameObject p in path)
         {
-            if (Vector3.Distance(this.transform.position, p.transform.position) <= range/2)
+            if (Vector3.Distance(this.transform.position, p.transform.position) <= range / 2)
             {
                 p.layer = LayerMask.NameToLayer("Turret");
             }
         }
-                
+
     }
 
     void UpdateTarget()
@@ -78,7 +75,7 @@ public class TurretScript : MonoBehaviour
         Vector3 rotation = Quaternion.Lerp(PartToRotate.rotation, lookRotation, Time.deltaTime * turnSpeed).eulerAngles;
         PartToRotate.rotation = Quaternion.Euler(0f, rotation.y, 0f);
 
-        if(fireCountdown <= 0)
+        if (fireCountdown <= 0)
         {
             Shoot();
             fireCountdown = 1f / fireRate;
@@ -94,7 +91,7 @@ public class TurretScript : MonoBehaviour
         GameObject bulletGo = (GameObject)Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
         BulletScript bullet = bulletGo.GetComponent<BulletScript>();
 
-        if(bullet != null)
+        if (bullet != null)
         {
             bullet.Seek(target);
         }

@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using System;
 using BehaviorTree;
-using static UnityEngine.GraphicsBuffer;
+using UnityEngine;
 
 public class LookAtTarget : Node
 {
@@ -21,7 +17,7 @@ public class LookAtTarget : Node
     public override NodeState Evaluate()
     {
         target = CheckForEnemy.target;
-        if (target== null)
+        if (target == null)
         {
             state = NodeState.FAILURE;
             return state;

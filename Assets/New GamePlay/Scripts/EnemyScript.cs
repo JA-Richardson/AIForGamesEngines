@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyScript : MonoBehaviour
@@ -20,8 +18,8 @@ public class EnemyScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float distanceToTarget =  (Target.transform.position - transform.position).magnitude;
-        if(distanceToTarget <= 5)
+        float distanceToTarget = (Target.transform.position - transform.position).magnitude;
+        if (distanceToTarget <= 5)
         {
             baseScript.Damage(5);
             GameObject effectIns = (GameObject)Instantiate(damageEffect, transform.position, transform.rotation);
@@ -35,7 +33,7 @@ public class EnemyScript : MonoBehaviour
     {
         health -= damage;
 
-        if(health <= 0)
+        if (health <= 0)
         {
             GameManager.Instance.AddCurrency(1);
             GameObject effectIns = (GameObject)Instantiate(destroyEffect, transform.position, transform.rotation);

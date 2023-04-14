@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Path
@@ -9,15 +7,15 @@ public class Path
     public readonly int finishLineIndex;
     public readonly int slowDownIndex;
 
-
+    
     public Path(Vector3[] waypoint, Vector3 startPos, float turnDist, float stoppingDist)
     {
         lookPoints = waypoint;
         turnBoundaries = new PathLine[lookPoints.Length];
         finishLineIndex = turnBoundaries.Length - 1;
-
+        //Converst start pos to a Vector2
         Vector2 prevPoint = V3ToV2(startPos);
-        for(int i= 0; i < lookPoints.Length; i++)
+        for (int i = 0; i < lookPoints.Length; i++)
         {
             Vector2 currentPoint = V3ToV2(lookPoints[i]);
             Vector2 dirToCurrentPoint = (currentPoint - prevPoint).normalized;
@@ -27,6 +25,7 @@ public class Path
         }
 
         float distFromEnd = 0;
+        //Loops through the points in reverse order
         for (int i = lookPoints.Length - 1; i > 0; i--)
         {
             distFromEnd += Vector3.Distance(lookPoints[i], lookPoints[i - 1]);
@@ -37,7 +36,7 @@ public class Path
             }
         }
     }
-
+    //Converts a Vector3 to a Vector2
     Vector2 V3ToV2(Vector3 v3)
     {
         return new Vector2(v3.x, v3.z);
@@ -55,7 +54,7 @@ public class Path
         {
             p.DrawWithGizmos(10);
         }
-        
+
     }
-        
+
 }

@@ -1,6 +1,4 @@
 using UnityEngine;
-using UnityEngine.UI;
-using System.Collections;
 
 public class BoxCollider : MonoBehaviour
 {
@@ -11,7 +9,7 @@ public class BoxCollider : MonoBehaviour
     private PublicVariables wallCountscript;
 
     public UnityEngine.UI.Button turretButton;
-    public UnityEngine.UI.Button wallButton; 
+    public UnityEngine.UI.Button wallButton;
 
     static bool wall = false;
     static bool turret = false;
@@ -50,10 +48,10 @@ public class BoxCollider : MonoBehaviour
     void Start()
     {
         wallCountscript = PublicVariablesHolder.GetComponent<PublicVariables>();
-        
+
         UnityEngine.UI.Button turretButtonScr = turretButton.GetComponent<UnityEngine.UI.Button>();
         turretButtonScr.onClick.AddListener(ChangeToTurret);
-        
+
         UnityEngine.UI.Button wallButtonScr = wallButton.GetComponent<UnityEngine.UI.Button>();
         wallButtonScr.onClick.AddListener(ChangeToWall);
 
@@ -75,9 +73,9 @@ public class BoxCollider : MonoBehaviour
 
     void Update()
     {
-        
-      
-            
+
+
+
         //if (Input.GetKey("a"))
         //{
         //    turret = false;

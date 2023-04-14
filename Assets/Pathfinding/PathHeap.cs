@@ -1,11 +1,8 @@
-using UnityEngine;
-using System.Collections;
 using System;
 
 public class PathHeap<T> where T : IHeapItem<T>
 {
-
-    T[] items;
+    readonly T[] items;
     int currentItemCount;
 
     public PathHeap(int maxHeapSize)
@@ -55,12 +52,9 @@ public class PathHeap<T> where T : IHeapItem<T>
         {
             int childIndexLeft = item.HeapIndex * 2 + 1;
             int childIndexRight = item.HeapIndex * 2 + 2;
-            int swapIndex = 0;
-
             if (childIndexLeft < currentItemCount)
             {
-                swapIndex = childIndexLeft;
-
+                int swapIndex = childIndexLeft;
                 if (childIndexRight < currentItemCount)
                 {
                     if (items[childIndexLeft].CompareTo(items[childIndexRight]) < 0)
@@ -111,9 +105,7 @@ public class PathHeap<T> where T : IHeapItem<T>
     {
         items[itemA.HeapIndex] = itemB;
         items[itemB.HeapIndex] = itemA;
-        int itemAIndex = itemA.HeapIndex;
-        itemA.HeapIndex = itemB.HeapIndex;
-        itemB.HeapIndex = itemAIndex;
+        (itemB.HeapIndex, itemA.HeapIndex) = (itemA.HeapIndex, itemB.HeapIndex);
     }
 }
 

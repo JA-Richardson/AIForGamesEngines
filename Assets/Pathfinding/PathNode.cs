@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 public class PathNode : IHeapItem<PathNode>
 {
@@ -15,16 +14,16 @@ public class PathNode : IHeapItem<PathNode>
     public PathNode parent;
     int heapIndex;
 
-    public PathNode(bool _walkable, Vector3 _worldPos, int _gridX, int _gridY, int _penalty)
+    public PathNode(bool walkable, Vector3 worldPos, int gridX, int gridY, int penalty)
     {
-        walkable = _walkable;
-        worldPosition = _worldPos;
-        gridX = _gridX;
-        gridY = _gridY;
-        movementPenalty = _penalty;
+        this.walkable = walkable;
+        worldPosition = worldPos;
+        this.gridX = gridX;
+        this.gridY = gridY;
+        movementPenalty = penalty;
     }
 
-    public int fCost
+    public int FCost
     {
         get
         {
@@ -46,7 +45,7 @@ public class PathNode : IHeapItem<PathNode>
 
     public int CompareTo(PathNode nodeToCompare)
     {
-        int compare = fCost.CompareTo(nodeToCompare.fCost);
+        int compare = FCost.CompareTo(nodeToCompare.FCost);
         if (compare == 0)
         {
             compare = hCost.CompareTo(nodeToCompare.hCost);

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class NodeScript : MonoBehaviour
@@ -19,7 +17,7 @@ public class NodeScript : MonoBehaviour
 
     private void OnMouseDown()
     {
-        if(turret != null)
+        if (turret != null)
         {
             Debug.Log("Cant Build There!");
             return;
@@ -44,6 +42,6 @@ public class NodeScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

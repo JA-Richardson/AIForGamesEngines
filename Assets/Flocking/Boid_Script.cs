@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 public class Boid_Script : MonoBehaviour
@@ -29,7 +26,7 @@ public class Boid_Script : MonoBehaviour
     Vector3 avoidance;
 
     GameObject[] boids;
-    
+
     void Start()
     {
         this.transform.position = new Vector3(
@@ -42,7 +39,7 @@ public class Boid_Script : MonoBehaviour
 
         boids = GameObject.FindGameObjectsWithTag("Boid");
 
-        
+
         Color newColor = new Color(Random.value, Random.value, Random.value, 1.0f);
 
         var boidRenderer = this.GetComponent<Renderer>();
@@ -54,7 +51,7 @@ public class Boid_Script : MonoBehaviour
 
     void Update()
     {
-       
+
 
         separation = Vector3.zero;
         alignment = Vector3.zero;
@@ -74,7 +71,7 @@ public class Boid_Script : MonoBehaviour
 
                 if (distance < separationDistance)
                 {
-                    separation += (this.transform.position - boid.transform.position) /Mathf.Pow(distance,2);
+                    separation += (this.transform.position - boid.transform.position) / Mathf.Pow(distance, 2);
                     separationCount++;
                 }
                 else if (distance < neighborDistance)
@@ -90,12 +87,12 @@ public class Boid_Script : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(this.transform.position, this.transform.up, out hit, raycastDistance, obstacleLayer))
         {
-            avoidance += hit.normal / Mathf.Pow(hit.distance, 2); 
+            avoidance += hit.normal / Mathf.Pow(hit.distance, 2);
         }
 
-        if (Physics.Raycast(this.transform.position, this.transform.up+new Vector3(10,0,0), out hit, raycastDistance, obstacleLayer))
+        if (Physics.Raycast(this.transform.position, this.transform.up + new Vector3(10, 0, 0), out hit, raycastDistance, obstacleLayer))
         {
-            avoidance += hit.normal / Mathf.Pow(hit.distance, 2); 
+            avoidance += hit.normal / Mathf.Pow(hit.distance, 2);
         }
         if (Physics.Raycast(this.transform.position, this.transform.up + new Vector3(-10, 0, 0), out hit, raycastDistance, obstacleLayer))
         {
@@ -109,7 +106,7 @@ public class Boid_Script : MonoBehaviour
         {
             avoidance += hit.normal / Mathf.Pow(hit.distance, 2);
         }
-        if(avoidance!= Vector3.zero)
+        if (avoidance != Vector3.zero)
         {
             //avoidance.Normalize();
             avoidance *= avoidanceWeight;

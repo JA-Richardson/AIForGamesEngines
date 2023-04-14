@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using BehaviorTree;
+using System.Collections.Generic;
 
 public class TestEnemy : Tree
 {

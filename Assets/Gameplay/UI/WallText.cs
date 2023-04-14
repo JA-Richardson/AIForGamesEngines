@@ -1,10 +1,9 @@
-using UnityEngine;
-using System.Collections;
 using TMPro;
+using UnityEngine;
 
 public class WallText : MonoBehaviour
 {
-	public TextMeshProUGUI textDisplay;
+    public TextMeshProUGUI textDisplay;
 
     public GameObject PublicVariablesHolder;
     private PublicVariables wallCountscript;
@@ -16,6 +15,6 @@ public class WallText : MonoBehaviour
 
     void Update()
     {
-        textDisplay.text = wallCountscript.wallCount.ToString();  
+        textDisplay.text = wallCountscript.wallCount.ToString();
     }
 }

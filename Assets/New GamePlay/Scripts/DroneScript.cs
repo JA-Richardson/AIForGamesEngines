@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class DroneScript : MonoBehaviour
@@ -106,7 +104,7 @@ public class DroneScript : MonoBehaviour
     void increaseTargetInt()
     {
         targetPoint++;
-        if(targetPoint >= patrolPoints.Length)
+        if (targetPoint >= patrolPoints.Length)
         {
             targetPoint = 0;
         }

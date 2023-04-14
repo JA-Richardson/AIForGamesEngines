@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
 using TMPro;
 using UnityEngine;
 
@@ -43,7 +40,7 @@ public class GameManager : MonoBehaviour
 
     public void SpawnDrone()
     {
-        if(currency >= 20)
+        if (currency >= 20)
         {
             Instantiate(Drone, Base.position, Base.rotation);
             Destroy(button);

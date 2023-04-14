@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
 
@@ -7,26 +6,26 @@ public class Unit : MonoBehaviour
 {
     const float minUpdateTime = .2f;
     const float pathUpdateThreshold = .5f;
+    public float unitSpeed = 5f;
+    public float unitTurnDist = 1f;
+    public float unitTurnSpeed = 1f;
+    public float unitStoppingDist = 5f;
+    readonly Stopwatch timer = new();
     Transform target;
-    //public Transform target;
-
-    public float speed = 5f;
-    public float turnDist = 1f;
-    public float turnSpeed = 1f;
     Path path;
-    Stopwatch timer = new();
-    public float stoppingDist = 5f;
 
     void Start()
     {
+        //Rets the target to the base
         target = (GameObject.FindGameObjectWithTag("Base")).transform;
-        PathManager.ReqPath(new PathReq (transform.position, target.position, OnPathFound));
+        //Requests a path from the path manager
+        PathManager.ReqPath(new PathReq(transform.position, target.position, OnPathFound));
         timer.Start();
     }
 
     void Update()
     {
-
+        //Requests a new path every second - probably too quick
         if (timer.ElapsedMilliseconds > 1000)
         {
             timer.Reset();
@@ -35,14 +34,15 @@ public class Unit : MonoBehaviour
         }
 
     }
-
+    //Callback method
     public void OnPathFound(Vector3[] waypoints, bool pathSuccessful)
     {
+        //If a path is found, create a new path and start following it
         if (pathSuccessful)
         {
-            path = new Path(waypoints, transform.position, turnDist, stoppingDist);
-            StopCoroutine("FollowPath");
-            StartCoroutine("FollowPath");
+            path = new Path(waypoints, transform.position, unitTurnDist, unitStoppingDist);
+            StopCoroutine(nameof(FollowPath));
+            StartCoroutine(nameof(FollowPath));
             UnityEngine.Debug.Log("Path Found");
         }
     }
@@ -55,9 +55,10 @@ public class Unit : MonoBehaviour
         transform.LookAt(path.lookPoints[0]);
         while (followingPath)
         {
-            Vector2 pos2D = new Vector2(transform.position.x, transform.position.z);
+            Vector2 pos2D = new(transform.position.x, transform.position.z);
             while (path.turnBoundaries[pathIndex].CrossedLine(pos2D))
             {
+                //If unit has reached the end, break out of the loops
                 if (pathIndex == path.finishLineIndex)
                 {
                     followingPath = false;
@@ -70,30 +71,29 @@ public class Unit : MonoBehaviour
             }
             if (followingPath)
             {
-                if (pathIndex >= path.slowDownIndex && stoppingDist > 0)
+                //Starts to slow the unit as it reaches the goal
+                if (pathIndex >= path.slowDownIndex && unitStoppingDist > 0)
                 {
-                    speedPercent = Mathf.Clamp01(path.turnBoundaries[path.finishLineIndex].DistanceToEnd(pos2D) / stoppingDist);
+                    speedPercent = Mathf.Clamp01(path.turnBoundaries[path.finishLineIndex].DistanceToEnd(pos2D) / unitStoppingDist);
                     if (speedPercent < 0.01f)
                     {
+                        //If unit speed gets too low, classed as completeing path
                         followingPath = false;
                     }
                 }
-                
+
                 Quaternion targetRotation = Quaternion.LookRotation(path.lookPoints[pathIndex] - transform.position);
-                transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * turnSpeed);
-                transform.Translate(Vector3.forward  * Time.deltaTime * speed * speedPercent, Space.Self);
+                transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * unitTurnSpeed);
+                transform.Translate(unitSpeed * speedPercent * Time.deltaTime * Vector3.forward, Space.Self);
             }
             yield return null;
         }
-        
+
     }
 
     public void OnDrawGizmos()
     {
-        if (path != null)
-        {
-            path.DrawWithGizmos();
-        }
+        path?.DrawWithGizmos();
     }
 
     //coroutine for updating path if target moves, not used due to be a tower defense game
