@@ -162,6 +162,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1453a621089663d4a97a2016281c8493, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  unitSpeed: 5
+  unitTurnDist: 1
+  unitTurnSpeed: 1
+  unitStoppingDist: 5
 --- !u!114 &-7895329409480383197
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -190,3 +194,36 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   anim: {fileID: 0}
+--- !u!114 &8817984914367721867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6696928936052566065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a159d6f46dd5c9a4b8c8fc156e7c7ff6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  boidPrefab: {fileID: 5311418124619672470, guid: 7b6cc4b6bd54613419a55a4f25d9d0d6, type: 3}
+  target: {fileID: 7686268775316085282}
+  gridSystem: {fileID: 1667516034129093879, guid: f0d5c2af7bea86f48b81a95856dfe1e0, type: 3}
+  numBoids: 10
+  spawnRange: 2
+  speed: 6
+  rotationSpeed: 1
+  neighborDistance: 10
+  separationDistance: 1
+  separationWeight: 1
+  alignmentWeight: 0.6
+  cohesionWeight: 0.6
+  avoidanceWeight: 10
+  targetWeight: 0.8
+  raycastDistance: 10
+  fieldOfViewAngle: 70
+--- !u!4 &7686268775316085282 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 5090c1d92c3e3034a85460b495fcf820, type: 3}
+  m_PrefabInstance: {fileID: 3445720409331069240}
+  m_PrefabAsset: {fileID: 0}

@@ -13,6 +13,7 @@ TagManager:
   - DroneWP
   - FxTemporaire
   - Path
+  - Grid
   layers:
   - Default
   - TransparentFX

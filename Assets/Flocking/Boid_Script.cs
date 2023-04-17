@@ -29,7 +29,7 @@ public class Boid_Script : MonoBehaviour
     void Start()
     {
 
-
+        
 
 
 
@@ -47,6 +47,9 @@ public class Boid_Script : MonoBehaviour
 
     void Update()
     {
+
+
+
 
 
             Vector3 oldPosition = transform.position;
@@ -195,4 +198,5 @@ public class Boid_Script : MonoBehaviour
         Vector3 directionToTarget = (flockingManager.target.position - transform.position).normalized;
         return directionToTarget * flockingManager.targetWeight;
     }
+
 }

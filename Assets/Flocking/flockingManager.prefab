@@ -48,10 +48,10 @@ MonoBehaviour:
   target: {fileID: 0}
   gridSystem: {fileID: 0}
   numBoids: 20
-  spawnRange: 20
-  speed: 20
-  rotationSpeed: 1.5
-  neighborDistance: 10
+  spawnRange: 1
+  speed: 5
+  rotationSpeed: 1
+  neighborDistance: 5
   separationDistance: 3
   separationWeight: 1
   alignmentWeight: 0.6
@@ -59,4 +59,4 @@ MonoBehaviour:
   avoidanceWeight: 10
   targetWeight: 1
   raycastDistance: 10
-  fieldOfViewAngle: 80
+  fieldOfViewAngle: 120

@@ -27,9 +27,12 @@ public class FlockingManager : MonoBehaviour
 
     void Start()
     {
+
+        gridSystem = GameObject.FindGameObjectWithTag("Grid").GetComponent<GridSystem>();
+
         for (int i = 0; i < numBoids; i++)
         {
-            GameObject boidInstance = Instantiate(boidPrefab, Random.insideUnitSphere * spawnRange, Random.rotation);
+            GameObject boidInstance = Instantiate(boidPrefab, (Random.insideUnitSphere * spawnRange) + transform.position, Random.rotation);
             //GameObject boidInstance = Instantiate(boidPrefab,transform.position, Random.rotation);
             Boid_Script boidScript = boidInstance.GetComponent<Boid_Script>();
             boidScript.flockingManager = this;
@@ -37,4 +40,15 @@ public class FlockingManager : MonoBehaviour
             boids.Add(boidScript);
         }
     }
+    void KillBoids()
+    {
+        for ( int i=0; i<numBoids; i++)
+        {
+            Destroy(boids[i]);
+        }
+    }
+
+
+
+
 }

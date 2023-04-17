@@ -1855,7 +1855,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1667516034129093879, guid: f0d5c2af7bea86f48b81a95856dfe1e0, type: 3}
       propertyPath: cellSize
-      value: 2
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1667516034129093879, guid: f0d5c2af7bea86f48b81a95856dfe1e0, type: 3}
       propertyPath: gridSize.x
@@ -1932,7 +1932,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7326300798473398335, guid: 36f7bd9e66f588647a61a33aecf44545, type: 3}
       propertyPath: speed
-      value: 10
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7326300798473398335, guid: 36f7bd9e66f588647a61a33aecf44545, type: 3}
       propertyPath: target
@@ -1940,7 +1940,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7326300798473398335, guid: 36f7bd9e66f588647a61a33aecf44545, type: 3}
       propertyPath: numBoids
-      value: 250
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 7326300798473398335, guid: 36f7bd9e66f588647a61a33aecf44545, type: 3}
       propertyPath: boidPrefab
@@ -1952,7 +1952,15 @@ PrefabInstance:
       objectReference: {fileID: 899085428}
     - target: {fileID: 7326300798473398335, guid: 36f7bd9e66f588647a61a33aecf44545, type: 3}
       propertyPath: rotationSpeed
-      value: 1
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7326300798473398335, guid: 36f7bd9e66f588647a61a33aecf44545, type: 3}
+      propertyPath: avoidanceWeight
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7326300798473398335, guid: 36f7bd9e66f588647a61a33aecf44545, type: 3}
+      propertyPath: raycastDistance
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 7326300798473398335, guid: 36f7bd9e66f588647a61a33aecf44545, type: 3}
       propertyPath: fieldOfViewAngle
