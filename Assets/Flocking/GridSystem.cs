@@ -37,18 +37,28 @@ public class GridSystem : MonoBehaviour
         Vector3Int cellCoords = WorldToCellCoords(boid.transform.position);
         List<Boid_Script> neighbors = new List<Boid_Script>();
 
-        for (int x = -1; x <= 1; x++)
+        int searchRadius = Mathf.CeilToInt(radius / cellSize);
+
+        for (int x = -searchRadius; x <= searchRadius; x++)
         {
-            for (int y = -1; y <= 1; y++)
+            for (int y = -searchRadius; y <= searchRadius; y++)
             {
-                for (int z = -1; z <= 1; z++)
+                for (int z = -searchRadius; z <= searchRadius; z++)
                 {
-                    Vector3Int neighborCoords = cellCoords + new Vector3Int(x, y, z);
+                    Vector3Int offset = new Vector3Int(x, y, z);
+                    float sqrOffsetMagnitude = offset.sqrMagnitude * cellSize * cellSize;
+                    if (sqrOffsetMagnitude > radius * radius)
+                    {
+                        continue;
+                    }
+
+                    Vector3Int neighborCoords = cellCoords + offset;
                     if (grid.ContainsKey(neighborCoords))
                     {
                         foreach (Boid_Script neighborBoid in grid[neighborCoords])
                         {
-                            if (neighborBoid != boid && Vector3.Distance(boid.transform.position, neighborBoid.transform.position) <= radius)
+                            float sqrDistance = (boid.transform.position - neighborBoid.transform.position).sqrMagnitude;
+                            if (neighborBoid != boid && sqrDistance <= radius * radius)
                             {
                                 neighbors.Add(neighborBoid);
                             }
@@ -59,6 +69,8 @@ public class GridSystem : MonoBehaviour
         }
 
         return neighbors;
+
+       
     }
     private void OnDrawGizmos()
     {
