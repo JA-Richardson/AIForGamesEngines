@@ -72,23 +72,26 @@ public class Boid_Script : MonoBehaviour
                 {
                     float distance = Vector3.Distance(boid.transform.position, this.transform.position);
 
-                    if (distance < flockingManager.separationDistance)
-                    {
+                    
 
-                        separation += (this.transform.position - boid.transform.position) / Mathf.Pow(distance, 2);
-                        separationCount++;
-                    }
-                    else if (distance < flockingManager.neighborDistance)
-                    {
                         if (IsInFieldOfView(boid.transform.position))
                         {
+                            if (distance < flockingManager.separationDistance)
+                            {
+
+                                separation += (this.transform.position - boid.transform.position) / Mathf.Pow(distance, 2);
+                                separationCount++;
+                            }
+
+
+
                             alignment += boid.transform.up;
                             alignmentCount++;
                             cohesion += boid.transform.up;
                             cohesionCount++;
                         }
 
-                    }
+                    
 
 
 
