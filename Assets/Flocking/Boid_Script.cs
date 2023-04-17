@@ -29,7 +29,6 @@ public class Boid_Script : MonoBehaviour
     void Start()
     {
 
-        
 
 
 
@@ -49,10 +48,13 @@ public class Boid_Script : MonoBehaviour
     {
 
 
+        if (flockingManager == null)
+        {
+            Destroy(gameObject);
+        }
 
 
-
-            Vector3 oldPosition = transform.position;
+        Vector3 oldPosition = transform.position;
 
 
 

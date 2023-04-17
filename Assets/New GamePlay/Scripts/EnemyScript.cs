@@ -5,6 +5,8 @@ public class EnemyScript : MonoBehaviour
     GameObject Target;
     public GameObject destroyEffect;
     public GameObject damageEffect;
+    
+
     BaseScript baseScript;
     FlockingManager flockingManager;
     public float health = 4f;
@@ -14,7 +16,7 @@ public class EnemyScript : MonoBehaviour
     {
         Target = GameObject.FindGameObjectWithTag("Base");
         baseScript = Target.GetComponent<BaseScript>();
-        flockingManager = this.GetComponent<FlockingManager>();
+        flockingManager = gameObject.GetComponent<FlockingManager>();
     }
 
     // Update is called once per frame
