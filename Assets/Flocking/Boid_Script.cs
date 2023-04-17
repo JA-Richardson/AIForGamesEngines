@@ -1,40 +1,36 @@
+
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Boid_Script : MonoBehaviour
 {
+    public FlockingManager flockingManager;
 
-    public float speed = 20f;
-    public float rotationSpeed = 5;
-    public float neighborDistance = 30.0f;
-    public float separationDistance = 3.0f;
-    public float separationWeight = 1.0f;
-    public float alignmentWeight = 0.6f;
-    public float cohesionWeight = 0.6f;
-    public float avoidanceWeight = 4.0f;
-    public float raycastDistance = 10.0f;
-    public float spawnRange = 10;
+
 
     int separationCount = 0;
     int alignmentCount = 0;
     int cohesionCount = 0;
 
     public LayerMask obstacleLayer;
-    public GameObject flockFollow;
+    
     Vector3 separation;
     Vector3 alignment;
     Vector3 cohesion;
     Vector3 avoidance;
+    Vector3 target;
 
     GameObject[] boids;
 
     void Start()
     {
-        this.transform.position = new Vector3(
-            Random.Range(-spawnRange, spawnRange),
-            Random.Range(-spawnRange, spawnRange),
-            Random.Range(-spawnRange, spawnRange));
 
-        this.transform.rotation = Random.rotation;
+
+
 
 
         boids = GameObject.FindGameObjectsWithTag("Boid");
@@ -53,94 +49,147 @@ public class Boid_Script : MonoBehaviour
     {
 
 
-        separation = Vector3.zero;
-        alignment = Vector3.zero;
-        cohesion = Vector3.zero;
-        avoidance = Vector3.zero;
-
-        separationCount = 0;
-        alignmentCount = 0;
-        cohesionCount = 0;
+            Vector3 oldPosition = transform.position;
 
 
-        foreach (GameObject boid in boids)
-        {
-            if (boid != this.gameObject)
+
+            separation = Vector3.zero;
+            alignment = Vector3.zero;
+            cohesion = Vector3.zero;
+            avoidance = Vector3.zero;
+            target = Vector3.zero;
+
+            separationCount = 0;
+            alignmentCount = 0;
+            cohesionCount = 0;
+
+
+            List<Boid_Script> neighbors = flockingManager.gridSystem.GetNeighbors(this, flockingManager.neighborDistance);
+
+            foreach (Boid_Script boid in neighbors)
             {
-                float distance = Vector3.Distance(boid.transform.position, this.transform.position);
+                if (boid != this.gameObject)
+                {
+                    float distance = Vector3.Distance(boid.transform.position, this.transform.position);
 
-                if (distance < separationDistance)
-                {
-                    separation += (this.transform.position - boid.transform.position) / Mathf.Pow(distance, 2);
-                    separationCount++;
+                    if (distance < flockingManager.separationDistance)
+                    {
+
+                        separation += (this.transform.position - boid.transform.position) / Mathf.Pow(distance, 2);
+                        separationCount++;
+                    }
+                    else if (distance < flockingManager.neighborDistance)
+                    {
+                        if (IsInFieldOfView(boid.transform.position))
+                        {
+                            alignment += boid.transform.up;
+                            alignmentCount++;
+                            cohesion += boid.transform.up;
+                            cohesionCount++;
+                        }
+
+                    }
+
+
+
+
                 }
-                else if (distance < neighborDistance)
+            }
+
+
+
+            Tuple<Vector3, float> avoidanceResult = CalculateAvoidance();
+            avoidance = avoidanceResult.Item1;
+            float maxHitDistance = avoidanceResult.Item2;
+            float proximityFactor = 1 - Mathf.Clamp01(maxHitDistance / flockingManager.raycastDistance);
+            float adjustedRotationSpeed = flockingManager.rotationSpeed * (1 + proximityFactor * 3);  // adjust boids turning speed when near an obstical
+
+
+            target = CalculateTargetForce();
+
+            if (separationCount > 0)
+            {
+                separation /= separationCount;
+                separation.Normalize();
+                separation *= flockingManager.separationWeight;
+            }
+
+            if (alignmentCount > 0)
+            {
+                alignment /= alignmentCount;
+                alignment.Normalize();
+                alignment *= flockingManager.alignmentWeight;
+            }
+
+            if (cohesionCount > 0)
+            {
+                cohesion /= cohesionCount;
+                cohesion -= this.transform.position;
+                cohesion.Normalize();
+                cohesion *= flockingManager.cohesionWeight;
+            }
+
+
+
+
+            Vector3 force = separation + alignment + cohesion + avoidance + target;
+            if (force != Vector3.zero)
+            {
+                this.transform.up = Vector3.Slerp(this.transform.up, force, Time.deltaTime * adjustedRotationSpeed);
+            }
+            this.transform.position += this.transform.up * Time.deltaTime * flockingManager.speed;
+
+            flockingManager.gridSystem.RemoveBoid(this, oldPosition);
+            flockingManager.gridSystem.AddBoid(this);
+        
+
+        
+
+    }
+    private bool IsInFieldOfView(Vector3 targetPosition)
+    {
+        Vector3 directionToTarget = targetPosition - transform.position;
+        float angleToTarget = Vector3.Angle(transform.up, directionToTarget);
+
+        return angleToTarget <= flockingManager.fieldOfViewAngle * 0.5f;
+    }
+    private Tuple<Vector3, float> CalculateAvoidance()
+    {
+        Vector3 avoidanceForce = Vector3.zero;
+        float[] raycastAngles = { 0, 30, -30, 60, -60 }; // Define multiple angles for raycasts
+        float[] raycastDistances = { flockingManager.raycastDistance, flockingManager.raycastDistance * 0.5f }; // Define multiple distances for raycasts
+        float maxHitDistance = 0f;
+        foreach (float distance in raycastDistances)
+        {
+            foreach (float angle in raycastAngles)
+            {
+                Vector3 rayDirection = Quaternion.Euler(0, angle, 0) * transform.up;
+                RaycastHit hit;
+
+                if (Physics.Raycast(transform.position, rayDirection, out hit, distance, obstacleLayer))
                 {
-                    alignment += boid.transform.up;
-                    alignmentCount++;
-                    cohesion += boid.transform.up;
-                    cohesionCount++;
+                    float avoidanceStrength = (1 - hit.distance / distance) * flockingManager.avoidanceWeight / Mathf.Pow(hit.distance, 2);
+                    avoidanceForce += hit.normal * avoidanceStrength;
+
+                    if (hit.distance > maxHitDistance)
+                    {
+                        maxHitDistance = hit.distance;
+                    }
                 }
             }
         }
 
-        RaycastHit hit;
-        if (Physics.Raycast(this.transform.position, this.transform.up, out hit, raycastDistance, obstacleLayer))
+        return new Tuple<Vector3, float>(avoidanceForce, maxHitDistance);
+    }
+
+    private Vector3 CalculateTargetForce()
+    {
+        if (flockingManager.target == null)
         {
-            avoidance += hit.normal / Mathf.Pow(hit.distance, 2);
+            return Vector3.zero;
         }
 
-        if (Physics.Raycast(this.transform.position, this.transform.up + new Vector3(10, 0, 0), out hit, raycastDistance, obstacleLayer))
-        {
-            avoidance += hit.normal / Mathf.Pow(hit.distance, 2);
-        }
-        if (Physics.Raycast(this.transform.position, this.transform.up + new Vector3(-10, 0, 0), out hit, raycastDistance, obstacleLayer))
-        {
-            avoidance += hit.normal / Mathf.Pow(hit.distance, 2);
-        }
-        if (Physics.Raycast(this.transform.position, this.transform.up + new Vector3(0, 0, 10), out hit, raycastDistance, obstacleLayer))
-        {
-            avoidance += hit.normal / Mathf.Pow(hit.distance, 2);
-        }
-        if (Physics.Raycast(this.transform.position, this.transform.up + new Vector3(0, 0, -10), out hit, raycastDistance, obstacleLayer))
-        {
-            avoidance += hit.normal / Mathf.Pow(hit.distance, 2);
-        }
-        if (avoidance != Vector3.zero)
-        {
-            //avoidance.Normalize();
-            avoidance *= avoidanceWeight;
-        }
-
-
-
-        if (separationCount > 0)
-        {
-            separation /= separationCount;
-            separation.Normalize();
-            separation *= separationWeight;
-        }
-
-        if (alignmentCount > 0)
-        {
-            alignment /= alignmentCount;
-            alignment.Normalize();
-            alignment *= alignmentWeight;
-        }
-
-        if (cohesionCount > 0)
-        {
-            cohesion /= cohesionCount;
-            cohesion -= this.transform.position;
-            cohesion.Normalize();
-            cohesion *= cohesionWeight;
-        }
-
-
-
-
-        Vector3 force = separation + alignment + cohesion + avoidance;
-        this.transform.up = Vector3.Slerp(this.transform.up, force, Time.deltaTime * rotationSpeed);
-        this.transform.position += this.transform.up * Time.deltaTime * speed;
+        Vector3 directionToTarget = (flockingManager.target.position - transform.position).normalized;
+        return directionToTarget * flockingManager.targetWeight;
     }
 }
