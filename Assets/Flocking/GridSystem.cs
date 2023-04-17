@@ -101,12 +101,13 @@ public class GridSystem : MonoBehaviour
 
     private Vector3Int WorldToCellCoords(Vector3 worldPosition)
     {
-        Vector3 normalizedPosition = (worldPosition + gridSize / 2) / cellSize;
+        Vector3 normalizedPosition = (worldPosition - gridPosition + gridSize / 2) / cellSize;
         return new Vector3Int(Mathf.FloorToInt(normalizedPosition.x), Mathf.FloorToInt(normalizedPosition.y), Mathf.FloorToInt(normalizedPosition.z));
     }
 
     private Vector3 CellCoordsToWorld(Vector3Int cellCoords)
     {
-        return (Vector3)cellCoords * cellSize - gridSize / 2 + gridPosition;
+        return (Vector3)cellCoords * cellSize + gridPosition - gridSize / 2 + new Vector3(cellSize / 2, cellSize / 2, cellSize / 2);
     }
 }
+
