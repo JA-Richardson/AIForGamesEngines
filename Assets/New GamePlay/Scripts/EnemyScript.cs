@@ -6,6 +6,7 @@ public class EnemyScript : MonoBehaviour
     public GameObject destroyEffect;
     public GameObject damageEffect;
     BaseScript baseScript;
+    FlockingManager flockingManager;
     public float health = 4f;
 
     // Start is called before the first frame update
@@ -13,6 +14,7 @@ public class EnemyScript : MonoBehaviour
     {
         Target = GameObject.FindGameObjectWithTag("Base");
         baseScript = Target.GetComponent<BaseScript>();
+        flockingManager = this.GetComponent<FlockingManager>();
     }
 
     // Update is called once per frame

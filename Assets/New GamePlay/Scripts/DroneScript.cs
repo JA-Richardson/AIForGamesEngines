@@ -6,7 +6,6 @@ public class DroneScript : MonoBehaviour
     public int targetPoint;
     public float speed;
     bool patrolling = false;
-    bool attacking = true;
 
     public float range = 15.0f;
     public float fireRate = 1;

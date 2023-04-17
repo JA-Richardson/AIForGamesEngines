@@ -40,7 +40,7 @@ public class FlockingManager : MonoBehaviour
             boids.Add(boidScript);
         }
     }
-    void KillBoids()
+    public void KillBoids()
     {
         for ( int i=0; i<numBoids; i++)
         {
