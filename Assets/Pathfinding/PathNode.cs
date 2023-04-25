@@ -22,7 +22,7 @@ public class PathNode : IHeapItem<PathNode>
         this.gridY = gridY;
         movementPenalty = penalty;
     }
-
+    //Calculate the F cost of the node
     public int FCost
     {
         get
@@ -30,7 +30,7 @@ public class PathNode : IHeapItem<PathNode>
             return gCost + hCost;
         }
     }
-
+    //Set and get the heap index
     public int HeapIndex
     {
         get
@@ -42,7 +42,7 @@ public class PathNode : IHeapItem<PathNode>
             heapIndex = value;
         }
     }
-
+    //Compares the costs of two nodes
     public int CompareTo(PathNode nodeToCompare)
     {
         int compare = FCost.CompareTo(nodeToCompare.FCost);

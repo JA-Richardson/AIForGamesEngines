@@ -26,7 +26,7 @@ public class PathGrid : MonoBehaviour
         nodeDiameter = nodeRadius * 2;
         gridSizeX = Mathf.RoundToInt(gridWorldSize.x / nodeDiameter);
         gridSizeY = Mathf.RoundToInt(gridWorldSize.y / nodeDiameter);
-
+        //Loop to add all the terrain types to the walkable mask
         foreach (TerrainType terrain in terrainPenalty)
         {
             walkableMask.value |= terrain.terrainMask.value;
@@ -38,6 +38,7 @@ public class PathGrid : MonoBehaviour
 
     void Update()
     {
+        //rebuilds the grid every second
         if (timer.ElapsedMilliseconds > 1000)
         {
             timer.Reset();
@@ -54,12 +55,14 @@ public class PathGrid : MonoBehaviour
             return gridSizeX * gridSizeY;
         }
     }
-
+    //Function to create the grid, using the world size and node radius
+    //Applies the penalty to the nodes based on the terrain type
+    //Then applies the blur
     void CreateGrid()
     {
         grid = new PathNode[gridSizeX, gridSizeY];
         Vector3 worldBottomLeft = transform.position - Vector3.right * gridWorldSize.x / 2 - Vector3.forward * gridWorldSize.y / 2;
-
+        //Double for loop to create the grid
         for (int x = 0; x < gridSizeX; x++)
         {
             for (int y = 0; y < gridSizeY; y++)
@@ -69,27 +72,27 @@ public class PathGrid : MonoBehaviour
 
                 int movementPenalty = 0;
 
-
-
-                Ray ray = new(worldPoint + Vector3.up * 50, Vector3.down);
-                if (Physics.Raycast(ray, out RaycastHit hit, 100, walkableMask))
+                Ray ray = new(worldPoint + Vector3.up * 50, Vector3.down); // Raycast from above the node down to the ground
+                if (Physics.Raycast(ray, out RaycastHit hit, 100, walkableMask)) // If the raycast hits something
                 {
-                    walkableRegionsDictionary.TryGetValue(hit.collider.gameObject.layer, out movementPenalty);
+
+                    walkableRegionsDictionary.TryGetValue(hit.collider.gameObject.layer, out movementPenalty); // Get the movement penalty for the terrain type
 
                 }
-                if (!walkable)
+                if (!walkable) // If the node is not walkable
                 {
                     movementPenalty += obstacleProximityPenalty;
                 }
 
 
 
-                grid[x, y] = new PathNode(walkable, worldPoint, x, y, movementPenalty);
+                grid[x, y] = new PathNode(walkable, worldPoint, x, y, movementPenalty); // Create the node
             }
         }
-        Blur(3);
+        Blur(3); // Apply the blur
     }
 
+    //returns the neighbouring nodes of a node in the grid
     public List<PathNode> GetNeighbours(PathNode node)
     {
         List<PathNode> neighbours = new();
@@ -114,7 +117,7 @@ public class PathGrid : MonoBehaviour
         return neighbours;
     }
 
-
+    //Gets the node from a world position
     public PathNode NodeFromWorldPoint(Vector3 worldPosition)
     {
         float percentX = (worldPosition.x + gridWorldSize.x / 2) / gridWorldSize.x;
@@ -148,6 +151,8 @@ public class PathGrid : MonoBehaviour
 
     }
 
+    //Applies a box blur to the grid for smoother paths
+    //Uses separate horizontal and vertical passes for improved efficiency
     void Blur(int blurSize)
     {
         int kernelSize = blurSize * 2 + 1;

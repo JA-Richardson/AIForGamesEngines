@@ -16,7 +16,7 @@ public class Unit : MonoBehaviour
 
     void Start()
     {
-        //Rets the target to the base
+        //Sets the target to the base
         target = (GameObject.FindGameObjectWithTag("Base")).transform;
         //Requests a path from the path manager
         PathManager.ReqPath(new PathReq(transform.position, target.position, OnPathFound));
@@ -46,7 +46,7 @@ public class Unit : MonoBehaviour
             UnityEngine.Debug.Log("Path Found");
         }
     }
-
+    //Coroutine for following the path
     IEnumerator FollowPath()
     {
         float speedPercent = 1;
@@ -55,6 +55,7 @@ public class Unit : MonoBehaviour
         transform.LookAt(path.lookPoints[0]);
         while (followingPath)
         {
+            //Gets the 2D position of the unit
             Vector2 pos2D = new(transform.position.x, transform.position.z);
             while (path.turnBoundaries[pathIndex].CrossedLine(pos2D))
             {
@@ -81,10 +82,10 @@ public class Unit : MonoBehaviour
                         followingPath = false;
                     }
                 }
-
-                Quaternion targetRotation = Quaternion.LookRotation(path.lookPoints[pathIndex] - transform.position);
+                //Rotates the unit towards the next point in the path
+                Quaternion targetRotation = Quaternion.LookRotation(path.lookPoints[pathIndex] - transform.position); 
                 transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * unitTurnSpeed);
-                transform.Translate(unitSpeed * speedPercent * Time.deltaTime * Vector3.forward, Space.Self);
+                transform.Translate(unitSpeed * speedPercent * Time.deltaTime * Vector3.forward, Space.Self); 
             }
             yield return null;
         }
@@ -96,7 +97,7 @@ public class Unit : MonoBehaviour
         path?.DrawWithGizmos();
     }
 
-    //coroutine for updating path if target moves, not used due to be a tower defense game
+    //Coroutine for updating path if target moves, not used due to be a tower defense game
     IEnumerator UpdatePath()
     {
         if (Time.timeSinceLevelLoad < .3f)

@@ -13,22 +13,25 @@ public class Path
         lookPoints = waypoint;
         turnBoundaries = new PathLine[lookPoints.Length];
         finishLineIndex = turnBoundaries.Length - 1;
-        //Converst start pos to a Vector2
+        //Converts start pos to a Vector2
         Vector2 prevPoint = V3ToV2(startPos);
+        //Loops through the points in order
         for (int i = 0; i < lookPoints.Length; i++)
         {
-            Vector2 currentPoint = V3ToV2(lookPoints[i]);
-            Vector2 dirToCurrentPoint = (currentPoint - prevPoint).normalized;
-            Vector2 turnBoundaryPoint = (i == finishLineIndex) ? currentPoint : currentPoint - dirToCurrentPoint * turnDist;
-            turnBoundaries[i] = new PathLine(turnBoundaryPoint, prevPoint - dirToCurrentPoint * turnDist);
-            prevPoint = turnBoundaryPoint;
+            Vector2 currentPoint = V3ToV2(lookPoints[i]); //Converts the current point to a Vector2
+            Vector2 dirToCurrentPoint = (currentPoint - prevPoint).normalized; //Gets the direction to the current point
+            Vector2 turnBoundaryPoint = (i == finishLineIndex) ? currentPoint : currentPoint - dirToCurrentPoint * turnDist; //Gets the point where the unit will turn
+            turnBoundaries[i] = new PathLine(turnBoundaryPoint, prevPoint - dirToCurrentPoint * turnDist); //Creates a new PathLine
+            prevPoint = turnBoundaryPoint; //Sets the previous point to the turn boundary point
         }
 
         float distFromEnd = 0;
         //Loops through the points in reverse order
         for (int i = lookPoints.Length - 1; i > 0; i--)
         {
+            //Calculate distance between current point and previousd
             distFromEnd += Vector3.Distance(lookPoints[i], lookPoints[i - 1]);
+            
             if (distFromEnd > stoppingDist)
             {
                 slowDownIndex = i;
@@ -42,6 +45,7 @@ public class Path
         return new Vector2(v3.x, v3.z);
     }
 
+    // Draws the path in the scene view
     public void DrawWithGizmos()
     {
         Gizmos.color = Color.black;
