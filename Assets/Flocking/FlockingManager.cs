@@ -46,6 +46,7 @@ public class FlockingManager : MonoBehaviour
         {
             Destroy(boids[i]);
         }
+        return;
     }
 
 

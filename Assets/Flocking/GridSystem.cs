@@ -57,10 +57,13 @@ public class GridSystem : MonoBehaviour
                     {
                         foreach (Boid_Script neighborBoid in grid[neighborCoords])
                         {
-                            float sqrDistance = (boid.transform.position - neighborBoid.transform.position).sqrMagnitude;
-                            if (neighborBoid != boid && sqrDistance <= radius * radius)
+                            if (neighborBoid != null)
                             {
-                                neighbors.Add(neighborBoid);
+                                float sqrDistance = (boid.transform.position - neighborBoid.transform.position).sqrMagnitude;
+                                if (neighborBoid != boid && sqrDistance <= radius * radius)
+                                {
+                                    neighbors.Add(neighborBoid);
+                                }
                             }
                         }
                     }
@@ -69,8 +72,6 @@ public class GridSystem : MonoBehaviour
         }
 
         return neighbors;
-
-       
     }
     private void OnDrawGizmos()
     {

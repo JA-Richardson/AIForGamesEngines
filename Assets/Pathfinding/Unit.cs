@@ -38,12 +38,12 @@ public class Unit : MonoBehaviour
     public void OnPathFound(Vector3[] waypoints, bool pathSuccessful)
     {
         //If a path is found, create a new path and start following it
-        if (pathSuccessful)
+        if (pathSuccessful && waypoints != null)
         {
             path = new Path(waypoints, transform.position, unitTurnDist, unitStoppingDist);
             StopCoroutine(nameof(FollowPath));
             StartCoroutine(nameof(FollowPath));
-            UnityEngine.Debug.Log("Path Found");
+            //UnityEngine.Debug.Log("Path Found");
         }
     }
     //Coroutine for following the path
