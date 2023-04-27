@@ -17,7 +17,7 @@ public class Shoot : Node
 
     public override NodeState Evaluate()
     {
-
+        GameManager.Instance.DroneBattery -= 2.0f * Time.deltaTime;
         if (fireCountdown <= 0)
         {
             GameObject bulletGo = (GameObject)UnityEngine.Object.Instantiate(_bulletPrefab, _transform.position, _transform.rotation);

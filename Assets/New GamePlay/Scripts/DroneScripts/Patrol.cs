@@ -9,9 +9,8 @@ public class Patrol : Node
     float speed = 5f;
     float turnSpeed = 10;
     private Transform _transform;
-    //string tag = "DroneWP";
 
-    public Patrol(Transform transform, Transform[] patrolPoints)//, Transform[] waypoints)
+    public Patrol(Transform transform, Transform[] patrolPoints)
     {
         _transform = transform;
         _patrolPoints = patrolPoints;
@@ -19,15 +18,7 @@ public class Patrol : Node
 
     public override NodeState Evaluate()
     {
-        //if(patrolPointObjects.Length == 0) 
-        //{
-        //    patrolPointObjects = GameObject.FindGameObjectsWithTag(tag);
-        //    for (int i = 0; i < patrolPointObjects.Length; i++)
-        //    {
-        //        patrolPoints[i] = patrolPointObjects[i].transform;
-        //    }
-        //}
-
+        GameManager.Instance.DroneBattery -= 2.0f * Time.deltaTime;
         if (_transform.position == _patrolPoints[targetPoint].position)
         {
             increaseTargetInt();
