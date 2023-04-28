@@ -26,7 +26,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Drone_Guard
-    second: {fileID: 2100000, guid: d39cf9605cb200e419e74038dcb4452d, type: 2}
+    second: {fileID: 2100000, guid: c3b1e43eca5a9d24ab5ad5c3b825d40f, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0

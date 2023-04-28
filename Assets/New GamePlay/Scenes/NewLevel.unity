@@ -18857,7 +18857,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CurrencyTMP: {fileID: 1418575448}
   currency: 100
-  DroneBattery: 20
+  DroneBattery: 100
   Turret: {fileID: 9044447194159356686, guid: f03aad0466a45eb4ab793695736eaafb, type: 3}
   Drone: {fileID: 1000013494599658, guid: d9cf92e4b7bc15d499c9d8a662d783b5, type: 3}
   Base: {fileID: 1276803252}
