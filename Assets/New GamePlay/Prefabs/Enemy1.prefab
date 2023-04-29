@@ -271,6 +271,22 @@ MonoBehaviour:
   r: 0
   g: 0
   b: 0
+--- !u!114 &5497134566571220557
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6696928936052566065}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f0933f2fc3ef5594d8c8d9e8d0671e7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  R: 0
+  G: 0
+  B: 0
+  TimeAlive: 0
 --- !u!4 &7686268775316085282 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 5090c1d92c3e3034a85460b495fcf820, type: 3}
