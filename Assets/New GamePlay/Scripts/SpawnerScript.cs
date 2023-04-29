@@ -6,10 +6,11 @@ public class SpawnerScript : MonoBehaviour
     public bool Active;
     public GameObject spawnEffect;
 
+
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("SpawnEnemy", 0f, 7f);
+        //InvokeRepeating("SpawnEnemy", 0f, 7f);
     }
 
     void SpawnEnemy()
