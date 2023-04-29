@@ -41,6 +41,12 @@ public class FlockingManager : MonoBehaviour
             gridSystem.AddBoid(boidScript);
             boids.Add(boidScript);
         }
+        DNA dnaScript = gameObject.GetComponent<DNA>();
+
+        r = dnaScript.R;
+        g = dnaScript.G;
+        b = dnaScript.B;
+
     }
     public void KillBoids()
     {

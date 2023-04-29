@@ -7,12 +7,16 @@ using System.Linq;
 public class PopulationManager : MonoBehaviour
 {
 
+    List<GameObject> newPopulation;
+    List<GameObject> sortedList;
+
+
     public GameObject personPrefab;
     public int PopulationSize = 10;
     List<GameObject> population = new List<GameObject>();
     public static float elapsed = 0;
-    int TrialTime = 40; //round timer
-    int Generation = 1;
+    int TrialTime =30; //round timer
+    public int Generation = 1;
 
     int count = 0;
 
@@ -35,7 +39,6 @@ public class PopulationManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
         StartCoroutine("spawn");
         //while (count<PopulationSize )
         //{
@@ -68,12 +71,28 @@ public class PopulationManager : MonoBehaviour
         //}
     }
 
+    IEnumerator spawn2()
+    {
+        for (int i = (int)(sortedList.Count / 2.0f) - 1; i < sortedList.Count - 1; i++)
+        {
+            population.Add(Breed(sortedList[i], sortedList[i + 1]));
+            population.Add(Breed(sortedList[i + 1], sortedList[i]));
+            yield return new WaitForSeconds(2.0f);
+
+        }
+        for (int i = 0; i < sortedList.Count; i++)
+        {
+            Destroy(sortedList[i]);
+        }
+        yield return null;
+    }
+
     IEnumerator spawn()
     {
         for (int i = 0; i < PopulationSize; i++)
         {
 
-            Vector3 pos = spawners[Random.Range(0, 4)].position; //changed to use 4 spawn points
+            Vector3 pos = spawners[Random.Range(0, 3)].position; //changed to use 4 spawn points
             GameObject go = Instantiate(personPrefab, pos, Quaternion.identity);
             go.GetComponent<DNA>().R = Random.Range(0.0f, 1.0f);
             go.GetComponent<DNA>().G = Random.Range(0.0f, 1.0f);
@@ -81,12 +100,14 @@ public class PopulationManager : MonoBehaviour
             population.Add(go);
             yield return new WaitForSeconds(2.0f);
         }
+
+
         yield return null;
     }
 
     GameObject Breed(GameObject parent1, GameObject parent2)
     {
-        Vector3 pos = new Vector3(Random.Range(-9, 9), Random.Range(-4.5f, 4.5f), 0);
+        Vector3 pos = spawners[Random.Range(0, 3)].position;
         GameObject offspring = Instantiate(personPrefab, pos, Quaternion.identity);
         DNA dna1 = parent1.GetComponent<DNA>();
         DNA dna2 = parent2.GetComponent<DNA>();
@@ -99,22 +120,23 @@ public class PopulationManager : MonoBehaviour
     }
     void BreedNewPopulation()
     {
-        List<GameObject> newPopulation = new List<GameObject>();
-        List<GameObject> sortedList = population.OrderBy(o => o.GetComponent<DNA>().TimeAlive).ToList();
+        newPopulation = new List<GameObject>();
+        sortedList = population.OrderBy(o => o.GetComponent<DNA>().TimeAlive).ToList();
 
         population.Clear();
+        StartCoroutine("spawn2");
+        //for (int i = (int)(sortedList.Count / 2.0f) - 1; i < sortedList.Count - 1; i++)
+        //{
+        //    population.Add(Breed(sortedList[i], sortedList[i + 1]));
+        //    population.Add(Breed(sortedList[i + 1], sortedList[i]));
+        //}
 
-        for (int i = (int)(sortedList.Count / 2.0f) - 1; i < sortedList.Count - 1; i++)
-        {
-            population.Add(Breed(sortedList[i], sortedList[i + 1]));
-            population.Add(Breed(sortedList[i + 1], sortedList[i]));
-        }
-
-        for (int i = 0; i < sortedList.Count; i++)
-        {
-            Destroy(sortedList[i]);
-        }
+        //for (int i = 0; i < sortedList.Count; i++)
+        //{
+        //    Destroy(sortedList[i]);
+        //}
         Generation++;
+        
     }
 
     // Update is called once per frame

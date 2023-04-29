@@ -9,23 +9,34 @@ public class EnemyScript : MonoBehaviour
 
     BaseScript baseScript;
     FlockingManager flockingManager;
-    public float health = 4f;
+    float health = 0f;
 
     public MeshRenderer rend;
 
     public float Red = 0.0f;
     public float Green = 0.0f;
     public float Blue = 0.0f;
+    DNA dnaScript;
+    //PopulationManager popman;
+    //float HealthMultiplier = 1.0f;
 
     bool IsDead = false;
 
     // Start is called before the first frame update
     void Start()
     {
+        //popman = gameObject.GetComponent<PopulationManager>();
+
+        //HealthMultiplier = HealthMultiplier + (popman.Generation / 5);
+
         Target = GameObject.FindGameObjectWithTag("Base");
         baseScript = Target.GetComponent<BaseScript>();
         flockingManager = gameObject.GetComponent<FlockingManager>();
         rend = GetComponent<MeshRenderer>();
+        health = (flockingManager.r + flockingManager.g + flockingManager.b) * 3;// * HealthMultiplier;
+        dnaScript = gameObject.GetComponent<DNA>();
+        
+
     }
 
     // Update is called once per frame
@@ -62,6 +73,7 @@ public class EnemyScript : MonoBehaviour
             IsDead = true;
             rend.enabled = false;
             gameObject.transform.localScale = new Vector3(0.0f, 0.0f, 0.0f);
+            dnaScript.dead();
             //Destroy(gameObject);
             return;
         }
