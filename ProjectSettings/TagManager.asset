@@ -14,6 +14,7 @@ TagManager:
   - FxTemporaire
   - Path
   - Grid
+  - Dead
   layers:
   - Default
   - TransparentFX
