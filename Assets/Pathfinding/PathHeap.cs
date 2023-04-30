@@ -10,14 +10,14 @@ public class PathHeap<T> where T : IHeapItem<T>
         items = new T[maxHeapSize];
     }
     //Add an item to the heap
-    public void Add(T item)
+    public void Add(T heapItem)
     {
-        item.HeapIndex = currentItemCount;
-        items[currentItemCount] = item;
-        SortUp(item);
+        heapItem.HeapIndex = currentItemCount;
+        items[currentItemCount] = heapItem;
+        SortUp(heapItem);
         currentItemCount++;
     }
-    //Remove the first item from the heap
+    // 
     public T RemoveFirst()
     {
         T firstItem = items[0];
@@ -28,11 +28,11 @@ public class PathHeap<T> where T : IHeapItem<T>
         return firstItem;
     }
     //Update the position of an item in the heap
-    public void UpdateItem(T item)
+    public void UpdateItem(T heapItem)
     {
-        SortUp(item);
+        SortUp(heapItem);
     }
-    //Get the number of items in the heap
+    //Returns the amount of items in the heap
     public int Count
     {
         get
@@ -41,21 +41,21 @@ public class PathHeap<T> where T : IHeapItem<T>
         }
     }
     //Check if the heap contains an item
-    public bool Contains(T item)
+    public bool Contains(T heapItem)
     {
-        return Equals(items[item.HeapIndex], item);
+        return Equals(items[heapItem.HeapIndex], heapItem);
     }
     //Sort the heap down
-    void SortDown(T item)
+    void SortDown(T heapItem)
     {
         while (true)
         {
-            int childIndexLeft = item.HeapIndex * 2 + 1;
-            int childIndexRight = item.HeapIndex * 2 + 2;
-            //Check if the left child is within the heap
+            int childIndexLeft = heapItem.HeapIndex * 2 + 1;
+            int childIndexRight = heapItem.HeapIndex * 2 + 2;
+            //Checks if left child is in the heap
             if (childIndexLeft < currentItemCount)
             {
-                //Check if the right child is within the heap
+                //Then checks if right child is in the heap
                 int swapIndex = childIndexLeft;
                 if (childIndexRight < currentItemCount)
                 {
@@ -66,9 +66,9 @@ public class PathHeap<T> where T : IHeapItem<T>
                     }
                 }
                 //Check if the item is less than the child
-                if (item.CompareTo(items[swapIndex]) < 0)
+                if (heapItem.CompareTo(items[swapIndex]) < 0)
                 {
-                    Swap(item, items[swapIndex]);
+                    Swap(heapItem, items[swapIndex]);
                 }
                 else
                 {
@@ -84,31 +84,32 @@ public class PathHeap<T> where T : IHeapItem<T>
         }
     }
     //Sort the heap up 
-    void SortUp(T item)
+    void SortUp(T heapItem)
     {
-        int parentIndex = (item.HeapIndex - 1) / 2;
+        int parentIndex = (heapItem.HeapIndex - 1) / 2;
 
         while (true)
         {
             T parentItem = items[parentIndex];
-            if (item.CompareTo(parentItem) > 0)
+            if (heapItem.CompareTo(parentItem) > 0)
             {
-                Swap(item, parentItem);
+                Swap(heapItem, parentItem);
             }
             else
             {
                 break;
             }
 
-            parentIndex = (item.HeapIndex - 1) / 2;
+            parentIndex = (heapItem.HeapIndex - 1) / 2;
         }
     }
-    // Swap two items in the heap
-    void Swap(T itemA, T itemB)
+    
+    //Swap two items in the heap
+    void Swap(T heapItemA, T heapItemB)
     {
-        items[itemA.HeapIndex] = itemB;
-        items[itemB.HeapIndex] = itemA;
-        (itemB.HeapIndex, itemA.HeapIndex) = (itemA.HeapIndex, itemB.HeapIndex);
+        items[heapItemA.HeapIndex] = heapItemB;
+        items[heapItemB.HeapIndex] = heapItemA;
+        (heapItemB.HeapIndex, heapItemA.HeapIndex) = (heapItemA.HeapIndex, heapItemB.HeapIndex);
     }
 }
 // Interface for the heap
