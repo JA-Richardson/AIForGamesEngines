@@ -9,8 +9,9 @@ public class GameManager : MonoBehaviour
     private string currencytext = "Currency: ";
     public int currency = 10;
 
-    private GameObject turretToBuild;
+    public float DroneBattery = 100.0f;
 
+    private GameObject turretToBuild;
     public GameObject GetTurretToBuild() { return turretToBuild; }
 
     public GameObject Turret;

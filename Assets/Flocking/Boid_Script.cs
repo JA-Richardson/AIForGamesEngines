@@ -10,6 +10,7 @@ public class Boid_Script : MonoBehaviour
 {
     public FlockingManager flockingManager;
 
+    
 
 
     int separationCount = 0;
@@ -34,8 +35,11 @@ public class Boid_Script : MonoBehaviour
 
         boids = GameObject.FindGameObjectsWithTag("Boid");
 
-
-        Color newColor = new Color(Random.value, Random.value, Random.value, 1.0f);
+        float R = flockingManager.r;
+        float G = flockingManager.g;
+        float B = flockingManager.b;
+        
+        Color newColor = new Color(R, G, B, 1.0f);
 
         var boidRenderer = this.GetComponent<Renderer>();
 
@@ -200,5 +204,7 @@ public class Boid_Script : MonoBehaviour
         Vector3 directionToTarget = (flockingManager.target.position - transform.position).normalized;
         return directionToTarget * flockingManager.targetWeight;
     }
+
+    
 
 }

@@ -22,6 +22,8 @@ public class FlockingManager : MonoBehaviour
     public float targetWeight = 1.0f;
     public float raycastDistance = 10.0f;
     public float fieldOfViewAngle = 120f;
+    
+    public float r,g,b;
 
     private List<Boid_Script> boids = new List<Boid_Script>();
 
@@ -48,6 +50,7 @@ public class FlockingManager : MonoBehaviour
         }
         return;
     }
+
 
 
 
