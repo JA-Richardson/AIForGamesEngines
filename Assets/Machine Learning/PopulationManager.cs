@@ -28,10 +28,10 @@ public class PopulationManager : MonoBehaviour
     GUIStyle guiStyle = new GUIStyle();
     void OnGUI()
     {
-        guiStyle.fontSize = 50;
+        guiStyle.fontSize = 30;
         guiStyle.normal.textColor = Color.white;
-        GUI.Label(new Rect(10, 10, 100, 20), "Generation " + Generation, guiStyle);
-        GUI.Label(new Rect(10, 65, 100, 20), "Trial Time " + (int)elapsed, guiStyle);
+        GUI.Label(new Rect(10, 60, 100, 20), "Generation " + Generation, guiStyle);
+        GUI.Label(new Rect(10, 105, 100, 20), "Trial Time " + (int)elapsed, guiStyle);
 
     }
 
@@ -40,6 +40,9 @@ public class PopulationManager : MonoBehaviour
     void Start()
     {
         StartCoroutine("spawn");
+
+        //old code before using coroutines
+
         //while (count<PopulationSize )
         //{
         //    Vector3 pos = spawners[Random.Range(0, 4)].position; //changed to use 4 spawn points
@@ -70,7 +73,7 @@ public class PopulationManager : MonoBehaviour
 
         //}
     }
-
+    //Spawns the enemies from the sorted list from generarion 2 onwards
     IEnumerator spawn2()
     {
         for (int i = (int)(sortedList.Count / 2.0f) - 1; i < sortedList.Count - 1; i++)
@@ -86,7 +89,7 @@ public class PopulationManager : MonoBehaviour
         }
         yield return null;
     }
-
+    //generation 1 randomly generated unit color spawn loop
     IEnumerator spawn()
     {
         for (int i = 0; i < PopulationSize; i++)
@@ -105,6 +108,7 @@ public class PopulationManager : MonoBehaviour
         yield return null;
     }
 
+    // breeds the top 50% of the sorted unit list together
     GameObject Breed(GameObject parent1, GameObject parent2)
     {
         Vector3 pos = spawners[Random.Range(0, 3)].position;

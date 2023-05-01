@@ -14,6 +14,9 @@ public class DNA : MonoBehaviour
     float TimeSpawned = 0f;
     float TimeDead = 0f;
 
+
+    //Old code from 2d version of machine learning script.
+
     //SpriteRenderer sRenderer;
     //Collider2D sCollider;
 
@@ -26,6 +29,8 @@ public class DNA : MonoBehaviour
     //    //sCollider.enabled = false; //Disable collisions of unit (Needs working out for 3d version)
     //}
 
+
+    // Function sets time the unit died at and works out how long it was alive
     public void dead()
     {
         TimeDead = Time.deltaTime;
@@ -38,6 +43,9 @@ public class DNA : MonoBehaviour
     void Start()
     {
         TimeSpawned = Time.timeSinceLevelLoad;
+
+        //more old code from 2d script
+
         // sRenderer = GetComponent<SpriteRenderer>();
         //sCollider = GetComponent<Collider2D>();
         // sRenderer.color = new Color(R, G, B); // sonehow send this to boids
