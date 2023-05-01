@@ -1,6 +1,10 @@
+// GridSystem.cs
 using System.Collections.Generic;
 using UnityEngine;
 
+// The GridSystem class manages the spatial partitioning of boids in the
+// flocking simulation, making it easier and more efficient to search for
+// neighboring boids.
 public class GridSystem : MonoBehaviour
 {
     public Vector3 gridSize = new Vector3(100, 100, 100);
@@ -8,11 +12,13 @@ public class GridSystem : MonoBehaviour
     public Vector3 gridPosition = Vector3.zero;
     private Dictionary<Vector3Int, List<Boid_Script>> grid;
 
+    // Initialize the grid dictionary
     void Awake()
     {
         grid = new Dictionary<Vector3Int, List<Boid_Script>>();
     }
 
+    // Add a boid to the grid
     public void AddBoid(Boid_Script boid)
     {
         Vector3Int cellCoords = WorldToCellCoords(boid.transform.position);
@@ -23,6 +29,7 @@ public class GridSystem : MonoBehaviour
         grid[cellCoords].Add(boid);
     }
 
+    // Remove a boid from the grid
     public void RemoveBoid(Boid_Script boid, Vector3 oldPosition)
     {
         Vector3Int cellCoords = WorldToCellCoords(oldPosition);
@@ -32,6 +39,7 @@ public class GridSystem : MonoBehaviour
         }
     }
 
+    // Get a list of neighboring boids within a given radius
     public List<Boid_Script> GetNeighbors(Boid_Script boid, float radius)
     {
         Vector3Int cellCoords = WorldToCellCoords(boid.transform.position);
@@ -73,6 +81,8 @@ public class GridSystem : MonoBehaviour
 
         return neighbors;
     }
+
+    // Draw the grid in the Unity editor
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
@@ -100,12 +110,14 @@ public class GridSystem : MonoBehaviour
 
 
 
+    // Convert world position to grid cell coordinates
     private Vector3Int WorldToCellCoords(Vector3 worldPosition)
     {
         Vector3 normalizedPosition = (worldPosition - gridPosition + gridSize / 2) / cellSize;
         return new Vector3Int(Mathf.FloorToInt(normalizedPosition.x), Mathf.FloorToInt(normalizedPosition.y), Mathf.FloorToInt(normalizedPosition.z));
     }
 
+    // Convert grid cell coordinates to world position
     private Vector3 CellCoordsToWorld(Vector3Int cellCoords)
     {
         return (Vector3)cellCoords * cellSize + gridPosition - gridSize / 2 + new Vector3(cellSize / 2, cellSize / 2, cellSize / 2);
