@@ -11,6 +11,9 @@ public class DNA : MonoBehaviour
     bool IsDead = false;
     public float TimeAlive = 0;
 
+    float TimeSpawned = 0f;
+    float TimeDead = 0f;
+
     //SpriteRenderer sRenderer;
     //Collider2D sCollider;
 
@@ -23,12 +26,21 @@ public class DNA : MonoBehaviour
     //    //sCollider.enabled = false; //Disable collisions of unit (Needs working out for 3d version)
     //}
 
+    public void dead()
+    {
+        TimeDead = Time.deltaTime;
+        IsDead = true;
+        TimeAlive = Time.timeSinceLevelLoad - TimeSpawned;
+        Debug.Log("Died At: " + TimeAlive);
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-       // sRenderer = GetComponent<SpriteRenderer>();
+        TimeSpawned = Time.timeSinceLevelLoad;
+        // sRenderer = GetComponent<SpriteRenderer>();
         //sCollider = GetComponent<Collider2D>();
-       // sRenderer.color = new Color(R, G, B); // sonehow send this to boids
+        // sRenderer.color = new Color(R, G, B); // sonehow send this to boids
     }
 
     // Update is called once per frame
